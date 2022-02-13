@@ -14,7 +14,7 @@ final class DataProcessor {
         errorContext: String
     ) throws -> T where T: Decodable {
         if let anError = error {
-            throw WebServiceClientError(
+            throw WebServiceError(
                 context: errorContext,
                 reason: "network error: \(anError.localizedDescription)"
             )
@@ -22,14 +22,14 @@ final class DataProcessor {
         
         guard let httpResponse = response as? HTTPURLResponse,
               200...299 ~= httpResponse.statusCode else {
-            throw WebServiceClientError(
+            throw WebServiceError(
                 context: errorContext,
                 reason: "invalid response: \(String(describing: response))"
             )
         }
         
         guard let unwrappedData = data else {
-            throw WebServiceClientError(
+            throw WebServiceError(
                 context: errorContext,
                 reason: "empty response data"
             )
@@ -38,7 +38,7 @@ final class DataProcessor {
         do {
             return try self.jsonDecoder.decode(T.self, from: unwrappedData)
         } catch {
-            throw WebServiceClientError(
+            throw WebServiceError(
                 context: errorContext,
                 reason: "parsing error: \(error.localizedDescription)"
             )

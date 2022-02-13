@@ -1,12 +1,12 @@
 import Foundation
 
 final class ProductsViewModel {
-    private let webServiceClient: WebServiceClient
+    private let webService: WebService
     private var products: [Product] = []
     private var callback: () -> Void = {}
     
-    init(webServiceClient: WebServiceClient) {
-        self.webServiceClient = webServiceClient
+    init(webService: WebService) {
+        self.webService = webService
     }
     
     func register(_ callback: @escaping () -> Void) {
@@ -14,7 +14,7 @@ final class ProductsViewModel {
     }
     
     func getProducts() {
-        self.webServiceClient.getProducts { [weak self] result in
+        self.webService.getProducts { [weak self] result in
             guard let strongSelf = self else {
                 return
             }

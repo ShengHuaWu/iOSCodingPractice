@@ -9,16 +9,16 @@ final class WebServiceClient {
         self.dataProcessor = dataProcessor
     }
     
-    func getProducts(_ completion: @escaping (Result<[Product], WebServiceClientError>) -> Void) {
+    func getProducts(_ completion: @escaping (Result<[Product], WebServiceError>) -> Void) {
         let urlStr = "https://api.gousto.co.uk/products/v2.0/products"
         let errorContext = "Get products"
                 
         guard let url = URL(string: urlStr) else {
-            let webServiceClientError = WebServiceClientError(
+            let webServiceError = WebServiceError(
                 context: errorContext,
                 reason: "invalid url string: \(urlStr)"
             )
-            completion(.failure(webServiceClientError))
+            completion(.failure(webServiceError))
             return
         }
         
@@ -35,14 +35,14 @@ final class WebServiceClient {
                     errorContext: errorContext
                 )
                 completion(.success(container.data))
-            } catch let error as WebServiceClientError {
+            } catch let error as WebServiceError {
                 completion(.failure(error))
             } catch let error {
-                let webServiceClientError = WebServiceClientError(
+                let webServiceError = WebServiceError(
                     context: errorContext,
                     reason: "unexpected error: \(error.localizedDescription)"
                 )
-                completion(.failure(webServiceClientError))
+                completion(.failure(webServiceError))
             }
         }.resume()
     }

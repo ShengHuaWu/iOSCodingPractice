@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             urlSession: .shared,
             dataProcessor: .init(jsonDecoder: .init())
         )
-        let productsViewModel = ProductsViewModel(webServiceClient: webServiceClient)
+        let productsViewModel = ProductsViewModel(webService: webServiceClient)
         let productsViewController = ProductsViewController(viewModel: productsViewModel)
         let navigationController = UINavigationController(rootViewController: productsViewController)
         
