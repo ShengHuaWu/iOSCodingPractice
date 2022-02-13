@@ -1,10 +1,15 @@
 import UIKit
 
 class ViewController: UIViewController {
+    let webServiceClient = WebServiceClient(
+        urlSession: .shared,
+        dataProcessor: .init(jsonDecoder: .init())
+    )
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        WebServiceClient().getProducts { result in
+        self.webServiceClient.getProducts { result in
             switch result {
             case let .success(products):
                 print(products.count)

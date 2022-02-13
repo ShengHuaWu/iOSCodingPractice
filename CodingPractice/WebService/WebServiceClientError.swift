@@ -5,12 +5,6 @@ struct WebServiceClientError: Error {
     let reason: String
 }
 
-extension WebServiceClientError {
-    static func makeGetProductsError(with reason: String) -> Self {
-        .init(context: "Get products", reason: reason)
-    }
-}
-
 extension WebServiceClientError: CustomStringConvertible {
     var description: String {
         """
