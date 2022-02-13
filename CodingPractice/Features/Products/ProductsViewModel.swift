@@ -1,14 +1,13 @@
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
-    let webServiceClient = WebServiceClient(
-        urlSession: .shared,
-        dataProcessor: .init(jsonDecoder: .init())
-    )
+final class ProductsViewModel {
+    private let webServiceClient: WebServiceClient
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    init(webServiceClient: WebServiceClient) {
+        self.webServiceClient = webServiceClient
+    }
+    
+    func getProducts() {
         self.webServiceClient.getProducts { result in
             switch result {
             case let .success(products):
