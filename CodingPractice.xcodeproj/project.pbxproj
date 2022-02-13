@@ -20,6 +20,7 @@
 		9BF85EC727B92F5800E78364 /* ProductsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */; };
 		9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EC827B92F7E00E78364 /* MockWebService.swift */; };
 		9BF85ECB27B9303100E78364 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85ECA27B9303100E78364 /* WebService.swift */; };
+		9BF85ECD27B9344000E78364 /* ProductsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85ECC27B9344000E78364 /* ProductsState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModelTests.swift; sourceTree = "<group>"; };
 		9BF85EC827B92F7E00E78364 /* MockWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebService.swift; sourceTree = "<group>"; };
 		9BF85ECA27B9303100E78364 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		9BF85ECC27B9344000E78364 /* ProductsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 		9BF85EB827B9299500E78364 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				9BF85ECC27B9344000E78364 /* ProductsState.swift */,
 				9BF85EB427B9292000E78364 /* ProductsViewController.swift */,
 				9BF85EB627B9295000E78364 /* ProductsViewModel.swift */,
 			);
@@ -243,6 +246,7 @@
 				9BF85ECB27B9303100E78364 /* WebService.swift in Sources */,
 				9BF85EB727B9295000E78364 /* ProductsViewModel.swift in Sources */,
 				9B13896227B5AA7B0070F53F /* DataProcessor.swift in Sources */,
+				9BF85ECD27B9344000E78364 /* ProductsState.swift in Sources */,
 				9BF85EB527B9292000E78364 /* ProductsViewController.swift in Sources */,
 				9B13894627B59EF10070F53F /* AppDelegate.swift in Sources */,
 				9B13895C27B5A1220070F53F /* Product.swift in Sources */,

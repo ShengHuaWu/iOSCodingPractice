@@ -22,30 +22,30 @@ final class ProductsViewModelTests: XCTestCase {
             )
         ]
         
-        var callbackCallCount = 0
-        self.subject.register {
-            callbackCallCount += 1
+        var states = [ProductsState]()
+        self.subject.onStateChange { state in
+            states.append(state)
         }
         
         self.subject.getProducts()
         
         XCTAssertEqual(self.webService.getProductsCallCount, 1)
-        XCTAssertEqual(callbackCallCount, 1)
+        XCTAssertEqual(states, [.loading, .loaded])
         XCTAssertEqual(self.subject.getNumberOfProducts(), 1)
     }
     
     func testGetProductsFails() {        
         self.webService.expectedError = WebServiceError(context: "Get products", reason: "failure")
         
-        var callbackCallCount = 0
-        self.subject.register {
-            callbackCallCount += 1
+        var states = [ProductsState]()
+        self.subject.onStateChange { state in
+            states.append(state)
         }
         
         self.subject.getProducts()
         
         XCTAssertEqual(self.webService.getProductsCallCount, 1)
-        XCTAssertEqual(callbackCallCount, 1)
+        XCTAssertEqual(states, [.loading, .error])
         XCTAssertEqual(self.subject.getNumberOfProducts(), 0)
     }
 }

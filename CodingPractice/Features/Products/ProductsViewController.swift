@@ -25,9 +25,20 @@ final class ProductsViewController: UITableViewController {
         
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.productCellId)
         
-        self.viewModel.register { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
+        self.viewModel.onStateChange { [weak self] state in
+            switch state {
+            case .loading:
+                // TODO: Show loading indicator
+                break
+                
+            case .loaded:
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+                
+            case .error:
+                // TODO: Show error alert
+                break
             }
         }
         
