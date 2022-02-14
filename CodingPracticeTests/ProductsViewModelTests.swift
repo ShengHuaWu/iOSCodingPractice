@@ -3,13 +3,18 @@ import XCTest
 
 final class ProductsViewModelTests: XCTestCase {
     private var webService: MockWebService!
+    private var routing: MockRouting!
     private var subject: ProductsViewModel!
     
     override func setUp() {
         super.setUp()
         
         self.webService = MockWebService()
-        self.subject = ProductsViewModel(webService: self.webService)
+        self.routing = MockRouting()
+        self.subject = ProductsViewModel(
+            webService: self.webService,
+            routing: self.routing
+        )
     }
     
     func testGetProductsSucceeds() {
@@ -47,5 +52,11 @@ final class ProductsViewModelTests: XCTestCase {
         XCTAssertEqual(self.webService.getProductsCallCount, 1)
         XCTAssertEqual(states, [.loading, .error])
         XCTAssertEqual(self.subject.getNumberOfProducts(), 0)
+    }
+    
+    func testPresentProductDetail() {
+        subject.presentProductDetail(at: 0)
+        
+        XCTAssertEqual(self.routing.presentProductDetailCallCount, 1)
     }
 }

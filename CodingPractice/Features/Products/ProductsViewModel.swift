@@ -2,11 +2,14 @@ import Foundation
 
 final class ProductsViewModel {
     private let webService: WebService
+    private weak var routing: Routing?
+    
     private var products: [Product] = []
     private var callback: (ProductsState) -> Void = { _ in }
     
-    init(webService: WebService) {
+    init(webService: WebService, routing: Routing) {
         self.webService = webService
+        self.routing = routing
     }
     
     func onStateChange(_ callback: @escaping (ProductsState) -> Void) {
@@ -33,5 +36,9 @@ final class ProductsViewModel {
     
     func getNumberOfProducts() -> Int {
         return self.products.count
+    }
+    
+    func presentProductDetail(at index: Int) {
+        routing?.presentProductDetail()
     }
 }

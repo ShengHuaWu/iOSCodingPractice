@@ -61,3 +61,11 @@ extension ProductsViewController {
         return cell
     }
 }
+
+// MARK: - UITableViewDelegate
+
+extension ProductsViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.viewModel.presentProductDetail(at: indexPath.row)
+    }
+}
