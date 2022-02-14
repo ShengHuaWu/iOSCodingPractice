@@ -1,6 +1,8 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    private let router = Router()
+    
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -8,16 +10,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
         
-        let webServiceClient = WebServiceClient(
-            urlSession: .shared,
-            dataProcessor: .init(jsonDecoder: .init())
-        )
-        let productsViewModel = ProductsViewModel(webService: webServiceClient)
-        let productsViewController = ProductsViewController(viewModel: productsViewModel)
-        let navigationController = UINavigationController(rootViewController: productsViewController)
-        
-        self.window = UIWindow(windowScene: windoScene)
-        self.window?.rootViewController = navigationController
-        self.window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windoScene)
+        self.router.presentProducts(in: window)
+        self.window = window
     }
 }
