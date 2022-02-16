@@ -25,6 +25,9 @@
 		9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EC827B92F7E00E78364 /* MockWebService.swift */; };
 		9BF85ECB27B9303100E78364 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85ECA27B9303100E78364 /* WebService.swift */; };
 		9BF85ECD27B9344000E78364 /* ProductsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85ECC27B9344000E78364 /* ProductsState.swift */; };
+		D810F8FB27BD1F4200F8DD78 /* ProductsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D810F8FA27BD1F4200F8DD78 /* ProductsRepository.swift */; };
+		D810F8FD27BD1FB900F8DD78 /* ProductsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D810F8FC27BD1FB900F8DD78 /* ProductsRepositoryTests.swift */; };
+		D810F93327BD249400F8DD78 /* MockProductsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D810F93227BD249400F8DD78 /* MockProductsRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,9 @@
 		9BF85EC827B92F7E00E78364 /* MockWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebService.swift; sourceTree = "<group>"; };
 		9BF85ECA27B9303100E78364 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		9BF85ECC27B9344000E78364 /* ProductsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsState.swift; sourceTree = "<group>"; };
+		D810F8FA27BD1F4200F8DD78 /* ProductsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRepository.swift; sourceTree = "<group>"; };
+		D810F8FC27BD1FB900F8DD78 /* ProductsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRepositoryTests.swift; sourceTree = "<group>"; };
+		D810F93227BD249400F8DD78 /* MockProductsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProductsRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +133,7 @@
 			children = (
 				9BF85EB827B9299500E78364 /* Products */,
 				9BB6060727BAF1D200D8E5D1 /* ProductDetail */,
+				D810F8FA27BD1F4200F8DD78 /* ProductsRepository.swift */,
 				9B13895B27B5A1220070F53F /* Product.swift */,
 				9BB6060327BAF02400D8E5D1 /* Router.swift */,
 			);
@@ -147,6 +154,7 @@
 			children = (
 				9BF85EC827B92F7E00E78364 /* MockWebService.swift */,
 				9BB6060B27BAF3D500D8E5D1 /* MockRouting.swift */,
+				D810F93227BD249400F8DD78 /* MockProductsRepository.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -166,6 +174,7 @@
 			children = (
 				9BB6060A27BAF3AA00D8E5D1 /* Mocks */,
 				9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */,
+				D810F8FC27BD1FB900F8DD78 /* ProductsRepositoryTests.swift */,
 			);
 			path = CodingPracticeTests;
 			sourceTree = "<group>";
@@ -280,6 +289,7 @@
 				9BF85EB527B9292000E78364 /* ProductsViewController.swift in Sources */,
 				9B13894627B59EF10070F53F /* AppDelegate.swift in Sources */,
 				9BF1A52D27BC3DCF0084D631 /* ProductDetailViewModel.swift in Sources */,
+				D810F8FB27BD1F4200F8DD78 /* ProductsRepository.swift in Sources */,
 				9B13895C27B5A1220070F53F /* Product.swift in Sources */,
 				9B13894827B59EF10070F53F /* SceneDelegate.swift in Sources */,
 				9B13895E27B5AA490070F53F /* WebServiceError.swift in Sources */,
@@ -292,8 +302,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BB6060C27BAF3D500D8E5D1 /* MockRouting.swift in Sources */,
+				D810F93327BD249400F8DD78 /* MockProductsRepository.swift in Sources */,
 				9BF85EC727B92F5800E78364 /* ProductsViewModelTests.swift in Sources */,
 				9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */,
+				D810F8FD27BD1FB900F8DD78 /* ProductsRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

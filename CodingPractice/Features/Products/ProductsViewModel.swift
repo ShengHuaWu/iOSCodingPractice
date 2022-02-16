@@ -1,41 +1,37 @@
 import Foundation
 
 final class ProductsViewModel {
-    private let webService: WebService
+    private let repository: ProductsRepositoryInterface
     private weak var routing: Routing?
     
-    private var products: [Product] = []
     private var callback: (ProductsState) -> Void = { _ in }
     
-    init(webService: WebService, routing: Routing) {
-        self.webService = webService
+    init(repository: ProductsRepositoryInterface, routing: Routing) {
+        self.repository = repository
         self.routing = routing
     }
     
     func onStateChange(_ callback: @escaping (ProductsState) -> Void) {
+        self.repository.onProductsChange { result in
+            switch result {
+            case .success:
+                callback(.loaded)
+                
+            case .failure:
+                callback(.error)
+            }
+        }
+        
         self.callback = callback
     }
     
     func getProducts() {
         self.callback(.loading)
-        self.webService.getProducts { [weak self] result in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            switch result {
-            case let .success(products):
-                strongSelf.products = products
-                strongSelf.callback(.loaded)
-                
-            case .failure:
-                strongSelf.callback(.error)
-            }
-        }
+        self.repository.getProducts()
     }
     
     func getNumberOfProducts() -> Int {
-        return self.products.count
+        return self.repository.getNumberOfProducts()
     }
     
     func presentProductDetail(at index: Int) {

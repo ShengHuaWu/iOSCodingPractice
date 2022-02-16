@@ -12,12 +12,13 @@ final class Router {
             urlSession: .shared,
             dataProcessor: .init(jsonDecoder: .init())
         )
-        let productsViewModel = ProductsViewModel(
-            webService: webServiceClient,
+        let repository = ProductsRepository(webService: webServiceClient)
+        let viewModel = ProductsViewModel(
+            repository: repository,
             routing: self
         )
-        let productsViewController = ProductsViewController(viewModel: productsViewModel)
-        let navigationController = UINavigationController(rootViewController: productsViewController)
+        let viewController = ProductsViewController(viewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: viewController)
         self.rootNavigationController = navigationController
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
@@ -26,7 +27,7 @@ final class Router {
 
 extension Router: Routing {
     func presentProductDetail() {
-        let productDetailViewController = ProductDetailViewController()
-        self.rootNavigationController?.pushViewController(productDetailViewController, animated: true)
+        let viewController = ProductDetailViewController()
+        self.rootNavigationController?.pushViewController(viewController, animated: true)
     }
 }

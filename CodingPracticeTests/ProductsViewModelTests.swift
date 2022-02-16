@@ -2,23 +2,23 @@ import XCTest
 @testable import CodingPractice
 
 final class ProductsViewModelTests: XCTestCase {
-    private var webService: MockWebService!
+    private var repository: MockProductsRepository!
     private var routing: MockRouting!
     private var subject: ProductsViewModel!
     
     override func setUp() {
         super.setUp()
         
-        self.webService = MockWebService()
+        self.repository = MockProductsRepository()
         self.routing = MockRouting()
         self.subject = ProductsViewModel(
-            webService: self.webService,
+            repository: self.repository,
             routing: self.routing
         )
     }
     
     func testGetProductsSucceeds() {
-        self.webService.expectedProducts = [
+        self.repository.expectedProducts = [
             Product(
                 id: "ABC",
                 title: "This is a product",
@@ -34,13 +34,16 @@ final class ProductsViewModelTests: XCTestCase {
         
         self.subject.getProducts()
         
-        XCTAssertEqual(self.webService.getProductsCallCount, 1)
+        XCTAssertEqual(self.repository.onProductsChangeCallCount, 1)
+        XCTAssertEqual(self.repository.getProductsCallCount, 1)
         XCTAssertEqual(states, [.loading, .loaded])
         XCTAssertEqual(self.subject.getNumberOfProducts(), 1)
     }
     
-    func testGetProductsFails() {        
-        self.webService.expectedError = WebServiceError(context: "Get products", reason: "failure")
+    func testGetProductsFails() {
+        struct PlaceholderError: Error {}
+        
+        self.repository.expectedError = PlaceholderError()
         
         var states = [ProductsState]()
         self.subject.onStateChange { state in
@@ -49,7 +52,8 @@ final class ProductsViewModelTests: XCTestCase {
         
         self.subject.getProducts()
         
-        XCTAssertEqual(self.webService.getProductsCallCount, 1)
+        XCTAssertEqual(self.repository.onProductsChangeCallCount, 1)
+        XCTAssertEqual(self.repository.getProductsCallCount, 1)
         XCTAssertEqual(states, [.loading, .error])
         XCTAssertEqual(self.subject.getNumberOfProducts(), 0)
     }
