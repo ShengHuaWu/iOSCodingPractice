@@ -59,8 +59,19 @@ final class ProductsViewModelTests: XCTestCase {
     }
     
     func testPresentProductDetail() {
+        self.repository.expectedProducts = [
+            Product(
+                id: "ABC",
+                title: "This is a product",
+                description: "nothing to mention here",
+                volume: nil
+            )
+        ]
+        
         subject.presentProductDetail(at: 0)
         
+        XCTAssertEqual(self.repository.getProductIdCallCount, 1)
         XCTAssertEqual(self.routing.presentProductDetailCallCount, 1)
+        XCTAssertEqual(self.routing.receivedProductId, "ABC")
     }
 }

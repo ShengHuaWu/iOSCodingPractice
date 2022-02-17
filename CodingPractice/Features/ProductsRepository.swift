@@ -4,6 +4,11 @@ protocol ProductsRepositoryInterface {
     func onProductsChange(_ callback: @escaping (Result<[Product], Error>) -> Void)
     func getProducts()
     func getNumberOfProducts() -> Int
+    func getProductId(at index: Int) -> String?
+}
+
+protocol ProductDetailRepoitoryInterface {
+    func getProduct(with id: String) -> Product?
 }
 
 final class ProductsRepository {
@@ -15,7 +20,9 @@ final class ProductsRepository {
     init(webService: WebService) {
         self.webService = webService
     }
-    
+}
+
+extension ProductsRepository: ProductsRepositoryInterface {
     func onProductsChange(_ callback: @escaping (Result<[Product], Error>) -> Void) {
         self.callback = callback
     }
@@ -40,6 +47,18 @@ final class ProductsRepository {
     func getNumberOfProducts() -> Int {
         return self.products.count
     }
+    
+    func getProductId(at index: Int) -> String? {
+        guard index < self.products.count else {
+            return nil
+        }
+        
+        return self.products[index].id
+    }
 }
 
-extension ProductsRepository: ProductsRepositoryInterface {}
+extension ProductsRepository: ProductDetailRepoitoryInterface {
+    func getProduct(with id: String) -> Product? {
+        return self.products.first(where: { $0.id == id })
+    }
+}

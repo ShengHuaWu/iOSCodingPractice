@@ -35,6 +35,11 @@ final class ProductsViewModel {
     }
     
     func presentProductDetail(at index: Int) {
-        routing?.presentProductDetail()
+        guard let id = self.repository.getProductId(at: index) else {
+            self.callback(.error)
+            return
+        }
+        
+        routing?.presentProductDetail(with: id)
     }
 }

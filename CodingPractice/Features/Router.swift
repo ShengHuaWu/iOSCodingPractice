@@ -1,11 +1,13 @@
 import UIKit
 
 protocol Routing: AnyObject {
-    func presentProductDetail()
+    func presentProductDetail(with id: String)
 }
 
 final class Router {
     private weak var rootNavigationController: UINavigationController?
+    
+    private weak var repository: ProductsRepository?
     
     func presentProducts(in window: UIWindow) {
         let webServiceClient = WebServiceClient(
@@ -13,6 +15,7 @@ final class Router {
             dataProcessor: .init(jsonDecoder: .init())
         )
         let repository = ProductsRepository(webService: webServiceClient)
+        self.repository = repository
         let viewModel = ProductsViewModel(
             repository: repository,
             routing: self
@@ -26,8 +29,16 @@ final class Router {
 }
 
 extension Router: Routing {
-    func presentProductDetail() {
-        let viewController = ProductDetailViewController()
+    func presentProductDetail(with id: String) {
+        guard let repository = self.repository else {
+            return
+        }
+        
+        let viewModel = ProductDetailViewModel(
+            productId: id,
+            repository: repository
+        )
+        let viewController = ProductDetailViewController(viewModel: viewModel)
         self.rootNavigationController?.pushViewController(viewController, animated: true)
     }
 }

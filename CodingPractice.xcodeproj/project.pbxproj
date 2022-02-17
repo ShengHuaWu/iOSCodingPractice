@@ -25,6 +25,9 @@
 		9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EC827B92F7E00E78364 /* MockWebService.swift */; };
 		9BF85ECB27B9303100E78364 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85ECA27B9303100E78364 /* WebService.swift */; };
 		9BF85ECD27B9344000E78364 /* ProductsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85ECC27B9344000E78364 /* ProductsState.swift */; };
+		9BFDB35027BEE179006327C3 /* ProductDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFDB34F27BEE179006327C3 /* ProductDetailState.swift */; };
+		9BFDB35227BEE223006327C3 /* ProductDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */; };
+		9BFDB35427BEE25C006327C3 /* MockProductDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFDB35327BEE25C006327C3 /* MockProductDetailRepository.swift */; };
 		D810F8FB27BD1F4200F8DD78 /* ProductsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D810F8FA27BD1F4200F8DD78 /* ProductsRepository.swift */; };
 		D810F8FD27BD1FB900F8DD78 /* ProductsRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D810F8FC27BD1FB900F8DD78 /* ProductsRepositoryTests.swift */; };
 		D810F93327BD249400F8DD78 /* MockProductsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D810F93227BD249400F8DD78 /* MockProductsRepository.swift */; };
@@ -62,6 +65,9 @@
 		9BF85EC827B92F7E00E78364 /* MockWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebService.swift; sourceTree = "<group>"; };
 		9BF85ECA27B9303100E78364 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		9BF85ECC27B9344000E78364 /* ProductsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsState.swift; sourceTree = "<group>"; };
+		9BFDB34F27BEE179006327C3 /* ProductDetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailState.swift; sourceTree = "<group>"; };
+		9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModelTests.swift; sourceTree = "<group>"; };
+		9BFDB35327BEE25C006327C3 /* MockProductDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProductDetailRepository.swift; sourceTree = "<group>"; };
 		D810F8FA27BD1F4200F8DD78 /* ProductsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRepository.swift; sourceTree = "<group>"; };
 		D810F8FC27BD1FB900F8DD78 /* ProductsRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsRepositoryTests.swift; sourceTree = "<group>"; };
 		D810F93227BD249400F8DD78 /* MockProductsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProductsRepository.swift; sourceTree = "<group>"; };
@@ -143,6 +149,7 @@
 		9BB6060727BAF1D200D8E5D1 /* ProductDetail */ = {
 			isa = PBXGroup;
 			children = (
+				9BFDB34F27BEE179006327C3 /* ProductDetailState.swift */,
 				9BB6060527BAF1CE00D8E5D1 /* ProductDetailViewController.swift */,
 				9BF1A52C27BC3DCF0084D631 /* ProductDetailViewModel.swift */,
 			);
@@ -155,6 +162,7 @@
 				9BF85EC827B92F7E00E78364 /* MockWebService.swift */,
 				9BB6060B27BAF3D500D8E5D1 /* MockRouting.swift */,
 				D810F93227BD249400F8DD78 /* MockProductsRepository.swift */,
+				9BFDB35327BEE25C006327C3 /* MockProductDetailRepository.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -175,6 +183,7 @@
 				9BB6060A27BAF3AA00D8E5D1 /* Mocks */,
 				9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */,
 				D810F8FC27BD1FB900F8DD78 /* ProductsRepositoryTests.swift */,
+				9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */,
 			);
 			path = CodingPracticeTests;
 			sourceTree = "<group>";
@@ -282,6 +291,7 @@
 			files = (
 				9BB6060427BAF02400D8E5D1 /* Router.swift in Sources */,
 				9BF85ECB27B9303100E78364 /* WebService.swift in Sources */,
+				9BFDB35027BEE179006327C3 /* ProductDetailState.swift in Sources */,
 				9BF85EB727B9295000E78364 /* ProductsViewModel.swift in Sources */,
 				9B13896227B5AA7B0070F53F /* DataProcessor.swift in Sources */,
 				9BF85ECD27B9344000E78364 /* ProductsState.swift in Sources */,
@@ -302,10 +312,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BB6060C27BAF3D500D8E5D1 /* MockRouting.swift in Sources */,
+				9BFDB35427BEE25C006327C3 /* MockProductDetailRepository.swift in Sources */,
 				D810F93327BD249400F8DD78 /* MockProductsRepository.swift in Sources */,
 				9BF85EC727B92F5800E78364 /* ProductsViewModelTests.swift in Sources */,
 				9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */,
 				D810F8FD27BD1FB900F8DD78 /* ProductsRepositoryTests.swift in Sources */,
+				9BFDB35227BEE223006327C3 /* ProductDetailViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

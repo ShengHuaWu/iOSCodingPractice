@@ -32,22 +32,54 @@ final class ProductDetailViewController: UIViewController {
         return button
     }()
     
+    private let viewModel: ProductDetailViewModel
+    
+    init(viewModel: ProductDetailViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Product Details"
         self.view.backgroundColor = .white
         
+        self.addSubviews()
+        self.configureLayoutConstraints()
+        
+        self.viewModel.onProductDetailChange { [weak self] state in
+            switch state {
+            case let .present(displayInfo):
+                self?.titleLabel.text = displayInfo.title
+                self?.descriptionLabal.text = displayInfo.description
+                self?.view.layoutIfNeeded()
+                
+            case .error:
+                // TODO: Present an alert?
+                break
+            }
+        }
+        
+        self.viewModel.getProductDetail()
+    }
+}
+
+// MARK: - Private
+
+private extension ProductDetailViewController {
+    func addSubviews() {
         self.view.addSubview(self.titleLabel)
-        self.titleLabel.text = "Big Title"
-        
         self.view.addSubview(self.descriptionLabal)
-        self.descriptionLabal.text = """
-        A wiki (/ˈwɪki/ (audio speaker iconlisten) WIK-ee) is a hypertext publication collaboratively edited and managed by its own audience directly using a web browser. A typical wiki contains multiple pages for the subjects or scope of the project and could be either open to the public or limited to use within an organization for maintaining its internal knowledge base.
-        """
-        
         self.view.addSubview(self.favoriteButton)
-        
+    }
+    
+    func configureLayoutConstraints() {
         let layoutGuide = self.view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             self.titleLabel.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 18),

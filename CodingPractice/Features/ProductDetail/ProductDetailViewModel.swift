@@ -1,9 +1,31 @@
 import Foundation
 
 final class ProductDetailViewModel {
-    private let product: Product
+    private let repository: ProductDetailRepoitoryInterface
     
-    init(product: Product) {
-        self.product = product
+    private let productId: String
+    private var callback: (ProductDetailState) -> Void = { _ in }
+    
+    init(productId: String, repository: ProductDetailRepoitoryInterface) {
+        self.productId = productId
+        self.repository = repository
+    }
+    
+    func onProductDetailChange(_ callback: @escaping (ProductDetailState) -> Void) {
+        self.callback = callback
+    }
+    
+    func getProductDetail() {
+        guard let product = self.repository.getProduct(with: self.productId) else {
+            self.callback(.error)
+            return
+        }
+        
+        let displayInfo = ProductDetailDisplayInfo(
+            title: product.title,
+            description: product.description,
+            isFavorited: false
+        )
+        self.callback(.present(displayInfo))
     }
 }
