@@ -7,14 +7,14 @@ protocol Routing: AnyObject {
 final class Router {
     private weak var rootNavigationController: UINavigationController?
     
-    private weak var repository: ProductsRepository?
+    private weak var repository: ProductFeatureRepository?
     
     func presentProducts(in window: UIWindow) {
         let webServiceClient = WebServiceClient(
             urlSession: .shared,
             dataProcessor: .init(jsonDecoder: .init())
         )
-        let repository = ProductsRepository(webService: webServiceClient)
+        let repository = ProductFeatureRepository(webService: webServiceClient)
         self.repository = repository
         let viewModel = ProductsViewModel(
             repository: repository,

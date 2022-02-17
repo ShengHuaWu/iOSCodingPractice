@@ -1,15 +1,15 @@
 import XCTest
 @testable import CodingPractice
 
-final class ProductsRepositoryTests: XCTestCase {
+final class ProductFeatureRepositoryTests: XCTestCase {
     private var webService: MockWebService!
-    private var subject: ProductsRepository!
+    private var subject: ProductFeatureRepository!
     
     override func setUp() {
         super.setUp()
         
         self.webService = MockWebService()
-        self.subject = ProductsRepository(webService: self.webService)
+        self.subject = ProductFeatureRepository(webService: self.webService)
     }
     
     func testGetProductsSucceeds() {

@@ -11,7 +11,7 @@ protocol ProductDetailRepoitoryInterface {
     func getProduct(with id: String) -> Product?
 }
 
-final class ProductsRepository {
+final class ProductFeatureRepository {
     private let webService: WebService
     
     private var products: [Product] = []
@@ -22,7 +22,7 @@ final class ProductsRepository {
     }
 }
 
-extension ProductsRepository: ProductsRepositoryInterface {
+extension ProductFeatureRepository: ProductsRepositoryInterface {
     func onProductsChange(_ callback: @escaping (Result<[Product], Error>) -> Void) {
         self.callback = callback
     }
@@ -57,7 +57,7 @@ extension ProductsRepository: ProductsRepositoryInterface {
     }
 }
 
-extension ProductsRepository: ProductDetailRepoitoryInterface {
+extension ProductFeatureRepository: ProductDetailRepoitoryInterface {
     func getProduct(with id: String) -> Product? {
         return self.products.first(where: { $0.id == id })
     }
