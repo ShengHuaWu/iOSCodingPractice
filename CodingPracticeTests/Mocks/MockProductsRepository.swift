@@ -5,6 +5,7 @@ final class MockProductsRepository: ProductsRepositoryInterface {
     private var callback: (Result<[Product], Error>) -> Void = { _ in }
     
     private(set) var getProductsCallCount = 0
+    private(set) var getProductCallCount = 0
     private(set) var getProductIdCallCount = 0
     var expectedProducts: [Product] = []
     var expectedError: Error!
@@ -27,9 +28,15 @@ final class MockProductsRepository: ProductsRepositoryInterface {
         return expectedProducts.count
     }
     
+    func getProduct(at index: Int) -> Product? {
+        self.getProductCallCount += 1
+        
+        return self.expectedProducts[index]
+    }
+    
     func getProductId(at index: Int) -> String? {
         self.getProductIdCallCount += 1
         
-        return expectedProducts[index].id
+        return self.expectedProducts[index].id
     }
 }

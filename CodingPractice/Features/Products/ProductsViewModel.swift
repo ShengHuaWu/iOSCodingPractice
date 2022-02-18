@@ -34,6 +34,22 @@ final class ProductsViewModel {
         return self.repository.getNumberOfProducts()
     }
     
+    func getProductRow(at index: Int) -> ProductRowDisplayInfo {
+        guard let product = self.repository.getProduct(at: index) else {
+            self.callback(.error)
+            
+            return .init(
+                title: "placeholder title",
+                isFavorited: false
+            )
+        }
+        
+        return .init(
+            title: product.title,
+            isFavorited: false
+        )
+    }
+    
     func presentProductDetail(at index: Int) {
         guard let id = self.repository.getProductId(at: index) else {
             self.callback(.error)

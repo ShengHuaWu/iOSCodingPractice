@@ -58,6 +58,23 @@ final class ProductsViewModelTests: XCTestCase {
         XCTAssertEqual(self.subject.getNumberOfProducts(), 0)
     }
     
+    func testGetProductRow() {
+        let product = Product(
+            id: "ABC",
+            title: "This is a product",
+            description: "nothing to mention here",
+            volume: nil
+        )
+        
+        self.repository.expectedProducts = [product]
+        
+        let displayInfo = subject.getProductRow(at: 0)
+        
+        XCTAssertEqual(self.repository.getProductCallCount, 1)
+        XCTAssertEqual(displayInfo.title, product.title)
+        XCTAssertFalse(displayInfo.isFavorited)
+    }
+    
     func testPresentProductDetail() {
         self.repository.expectedProducts = [
             Product(

@@ -55,8 +55,9 @@ extension ProductsViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productCellId, for: indexPath)
-        
-        cell.textLabel?.text = "\(indexPath.row)"
+        let displayInfo = self.viewModel.getProductRow(at: indexPath.row)
+        cell.textLabel?.text = displayInfo.title
+        cell.detailTextLabel?.text = displayInfo.isFavorited ? "favorite" : ""
         
         return cell
     }

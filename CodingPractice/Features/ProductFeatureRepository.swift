@@ -4,6 +4,7 @@ protocol ProductsRepositoryInterface {
     func onProductsChange(_ callback: @escaping (Result<[Product], Error>) -> Void)
     func getProducts()
     func getNumberOfProducts() -> Int
+    func getProduct(at index: Int) -> Product?
     func getProductId(at index: Int) -> String?
 }
 
@@ -46,6 +47,14 @@ extension ProductFeatureRepository: ProductsRepositoryInterface {
     
     func getNumberOfProducts() -> Int {
         return self.products.count
+    }
+    
+    func getProduct(at index: Int) -> Product? {
+        guard index < self.products.count else {
+            return nil
+        }
+        
+        return self.products[index]
     }
     
     func getProductId(at index: Int) -> String? {
