@@ -33,6 +33,15 @@ final class ProductDetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var contentView: UIStackView = {
+        let view = UIStackView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .vertical
+        view.spacing = 18
+        
+        return view
+    }()
+    
     private let viewModel: ProductDetailViewModel
     
     init(viewModel: ProductDetailViewModel) {
@@ -89,24 +98,20 @@ final class ProductDetailViewController: UIViewController {
 
 private extension ProductDetailViewController {
     func addSubviews() {
-        self.view.addSubview(self.titleLabel)
-        self.view.addSubview(self.descriptionLabal)
-        self.view.addSubview(self.favoriteButton)
+        self.contentView.addArrangedSubview(self.titleLabel)
+        self.contentView.addArrangedSubview(self.favoriteButton)
+        self.contentView.addArrangedSubview(self.descriptionLabal)
+        
+        self.view.addSubview(self.contentView)
     }
     
     func configureLayoutConstraints() {
         let layoutGuide = self.view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            self.titleLabel.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 18),
-            self.titleLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: 18),
-            self.titleLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -18),
-            self.favoriteButton.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 18),
-            self.favoriteButton.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor),
-            self.favoriteButton.trailingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor),
-            self.descriptionLabal.topAnchor.constraint(equalTo: self.favoriteButton.bottomAnchor, constant: 18),
-            self.descriptionLabal.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor),
-            self.descriptionLabal.trailingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor),
-            self.descriptionLabal.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -18)
+            self.contentView.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 18),
+            self.contentView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: 18),
+            self.contentView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -18),
+            self.contentView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -18)
         ])
     }
 }
