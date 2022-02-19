@@ -44,4 +44,33 @@ final class ProductDetailViewModelTests: XCTestCase {
         )
         XCTAssertEqual(states, [.present(expectedDisplayInfo)])
     }
+    
+    func testToggleIsFavorited() {
+        let product = Product(
+            id: self.productId,
+            title: "title",
+            description: "description",
+            volume: nil
+        )
+        
+        self.repository.expectedProduct = product
+        
+        var states: [ProductDetailState] = []
+        self.subject.onProductDetailChange { state in
+            states.append(state)
+        }
+        
+        self.subject.toggleIsFavorited()
+        
+        XCTAssertEqual(self.repository.toggleIsFavoritedCallCount, 1)
+        XCTAssertEqual(self.repository.getProductCallCount, 1)
+        XCTAssertEqual(self.repository.receivedProductId, self.productId)
+        
+        let expectedDisplayInfo = ProductDetailDisplayInfo(
+            title: product.title,
+            description: product.description,
+            isFavorited: false
+        )
+        XCTAssertEqual(states, [.present(expectedDisplayInfo)])
+    }
 }

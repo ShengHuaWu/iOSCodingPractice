@@ -25,9 +25,9 @@ final class ProductDetailViewController: UIViewController {
     private lazy var favoriteButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Favorite", for: .normal)
         button.setTitleColor(.darkText, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        button.addTarget(self, action: #selector(toggleIsFavorited), for: .touchUpInside)
         
         return button
     }()
@@ -54,11 +54,21 @@ final class ProductDetailViewController: UIViewController {
         self.configureLayoutConstraints()
         
         self.viewModel.onProductDetailChange { [weak self] state in
+            guard let strongSelf = self else {
+                return
+            }
+            
             switch state {
             case let .present(displayInfo):
-                self?.titleLabel.text = displayInfo.title
-                self?.descriptionLabal.text = displayInfo.description
-                self?.view.layoutIfNeeded()
+                strongSelf.titleLabel.text = displayInfo.title
+                strongSelf.descriptionLabal.text = displayInfo.description
+                if displayInfo.isFavorited {
+                    strongSelf.favoriteButton.setTitle("Unfavorite", for: .normal)
+                } else {
+                    strongSelf.favoriteButton.setTitle("Favorite", for: .normal)
+                }
+                
+                strongSelf.view.layoutIfNeeded()
                 
             case .error:
                 // TODO: Present an alert?
@@ -67,6 +77,10 @@ final class ProductDetailViewController: UIViewController {
         }
         
         self.viewModel.getProductDetail()
+    }
+    
+    @objc func toggleIsFavorited() {
+        self.viewModel.toggleIsFavorited()
     }
 }
 

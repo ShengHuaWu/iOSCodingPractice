@@ -24,8 +24,13 @@ final class ProductDetailViewModel {
         let displayInfo = ProductDetailDisplayInfo(
             title: product.title,
             description: product.description,
-            isFavorited: false
+            isFavorited: product.isFavorited
         )
         self.callback(.present(displayInfo))
+    }
+    
+    func toggleIsFavorited() {
+        self.repository.toggleIsFavorited(with: self.productId)
+        self.getProductDetail()
     }
 }
