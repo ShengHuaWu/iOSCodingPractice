@@ -14,10 +14,13 @@ final class ProductsViewModel {
     func onStateChange(_ callback: @escaping (ProductsState) -> Void) {
         self.repository.onProductsChange { result in
             switch result {
-            case .success:
+            case .updateAll:
                 callback(.loaded)
                 
-            case .failure:
+            case let .update(row):
+                callback(.update(row: row))
+                
+            case .error:
                 callback(.error)
             }
         }
@@ -46,7 +49,7 @@ final class ProductsViewModel {
         
         return .init(
             title: product.title,
-            isFavorited: false
+            isFavorited: product.isFavorited
         )
     }
     

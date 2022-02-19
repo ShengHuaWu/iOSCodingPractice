@@ -12,6 +12,17 @@ final class ProductDetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton(type: .roundedRect)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(.darkText, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        button.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        button.addTarget(self, action: #selector(toggleIsFavorited), for: .touchUpInside)
+        
+        return button
+    }()
+    
     private lazy var descriptionLabal: UILabel = {
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -20,16 +31,6 @@ final class ProductDetailViewController: UIViewController {
         label.numberOfLines = 0
         
         return label
-    }()
-    
-    private lazy var favoriteButton: UIButton = {
-        let button = UIButton(type: .roundedRect)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.darkText, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
-        button.addTarget(self, action: #selector(toggleIsFavorited), for: .touchUpInside)
-        
-        return button
     }()
     
     private let viewModel: ProductDetailViewModel
@@ -99,13 +100,13 @@ private extension ProductDetailViewController {
             self.titleLabel.topAnchor.constraint(equalTo: layoutGuide.topAnchor, constant: 18),
             self.titleLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: 18),
             self.titleLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -18),
-            self.descriptionLabal.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 18),
-            self.descriptionLabal.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor),
-            self.descriptionLabal.trailingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor),
-            self.favoriteButton.topAnchor.constraint(equalTo: self.descriptionLabal.bottomAnchor, constant: 18),
+            self.favoriteButton.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 18),
             self.favoriteButton.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor),
             self.favoriteButton.trailingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor),
-            self.favoriteButton.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -18)
+            self.descriptionLabal.topAnchor.constraint(equalTo: self.favoriteButton.bottomAnchor, constant: 18),
+            self.descriptionLabal.leadingAnchor.constraint(equalTo: self.titleLabel.leadingAnchor),
+            self.descriptionLabal.trailingAnchor.constraint(equalTo: self.titleLabel.trailingAnchor),
+            self.descriptionLabal.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor, constant: -18)
         ])
     }
 }

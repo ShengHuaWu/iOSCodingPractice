@@ -2,7 +2,7 @@
 
 final class MockProductsRepository: ProductsRepositoryInterface {
     private(set) var onProductsChangeCallCount = 0
-    private var callback: (Result<[Product], Error>) -> Void = { _ in }
+    private var callback: (ProductsRepositoryState) -> Void = { _ in }
     
     private(set) var getProductsCallCount = 0
     private(set) var getProductCallCount = 0
@@ -10,17 +10,17 @@ final class MockProductsRepository: ProductsRepositoryInterface {
     var expectedProducts: [Product] = []
     var expectedError: Error!
     
-    func onProductsChange(_ callback: @escaping (Result<[Product], Error>) -> Void) {
+    func onProductsChange(_ callback: @escaping (ProductsRepositoryState) -> Void) {
         self.onProductsChangeCallCount += 1
         self.callback = callback
     }
     
     func getProducts() {
         self.getProductsCallCount += 1
-        if let error = self.expectedError {
-            self.callback(.failure(error))
+        if self.expectedError != nil {
+            self.callback(.error)
         } else {
-            self.callback(.success(self.expectedProducts))
+            self.callback(.updateAll)
         }
     }
     

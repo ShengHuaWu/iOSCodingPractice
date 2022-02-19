@@ -23,7 +23,7 @@ final class ProductsViewController: UITableViewController {
         self.title = "Products"
         self.view.backgroundColor = .white
         
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.productCellId)
+        self.tableView.register(ProductRowCell.self, forCellReuseIdentifier: Constants.productCellId)
         
         self.viewModel.onStateChange { [weak self] state in
             switch state {
@@ -34,6 +34,14 @@ final class ProductsViewController: UITableViewController {
             case .loaded:
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
+                }
+                
+            case let .update(row):
+                DispatchQueue.main.async {
+                    self?.tableView.reloadRows(
+                        at: [.init(row: row, section: 0)],
+                        with: .none
+                    )
                 }
                 
             case .error:
@@ -57,7 +65,10 @@ extension ProductsViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productCellId, for: indexPath)
         let displayInfo = self.viewModel.getProductRow(at: indexPath.row)
         cell.textLabel?.text = displayInfo.title
-        cell.detailTextLabel?.text = displayInfo.isFavorited ? "favorite" : ""
+        
+        let isFavorited = displayInfo.isFavorited
+        cell.detailTextLabel?.textColor = isFavorited ? .red : .darkGray
+        cell.detailTextLabel?.text = isFavorited ? "favorited" : "not favorited"
         
         return cell
     }
