@@ -1,6 +1,6 @@
 @testable import CodingPractice
 
-final class MockProductsRepository: ProductsRepositoryInterface {
+final class MockProductsRepository: ProductsRepository {
     private(set) var onProductsChangeCallCount = 0
     private var callback: (ProductsRepositoryState) -> Void = { _ in }
     

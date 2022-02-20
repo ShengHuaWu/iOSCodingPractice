@@ -1,12 +1,12 @@
 import Foundation
 
 final class ProductDetailViewModel {
-    private let repository: ProductDetailRepoitoryInterface
+    private let repository: ProductDetailRepoitory
     
     private let productId: String
     private var callback: (ProductDetailState) -> Void = { _ in }
     
-    init(productId: String, repository: ProductDetailRepoitoryInterface) {
+    init(productId: String, repository: ProductDetailRepoitory) {
         self.productId = productId
         self.repository = repository
     }

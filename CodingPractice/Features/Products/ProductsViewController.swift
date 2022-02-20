@@ -23,6 +23,7 @@ final class ProductsViewController: UITableViewController {
         self.title = "Products"
         self.view.backgroundColor = .white
         
+        // Register custom cell type to show the detail text label
         self.tableView.register(ProductRowCell.self, forCellReuseIdentifier: Constants.productCellId)
         
         self.viewModel.onStateChange { [weak self] state in

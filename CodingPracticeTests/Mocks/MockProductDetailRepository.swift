@@ -1,6 +1,6 @@
 @testable import CodingPractice
 
-final class MockProductDetailRepository: ProductDetailRepoitoryInterface {
+final class MockProductDetailRepository: ProductDetailRepoitory {
     private(set) var getProductCallCount = 0
     private(set) var toggleIsFavoritedCallCount = 0
     

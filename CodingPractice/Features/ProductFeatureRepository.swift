@@ -1,21 +1,5 @@
 import Foundation
 
-enum ProductsRepositoryState: Equatable {
-    case updateAll([Product])
-    case update(id: String)
-    case error
-}
-
-protocol ProductsRepositoryInterface {
-    func onProductsChange(_ callback: @escaping (ProductsRepositoryState) -> Void)
-    func getProducts()
-}
-
-protocol ProductDetailRepoitoryInterface {
-    func getProduct(with id: String) -> Product?
-    func toggleIsFavorited(with id: String)
-}
-
 final class ProductFeatureRepository {
     private let webService: WebService
     private let persistence: Persistence
@@ -28,7 +12,7 @@ final class ProductFeatureRepository {
     }
 }
 
-extension ProductFeatureRepository: ProductsRepositoryInterface {
+extension ProductFeatureRepository: ProductsRepository {
     func onProductsChange(_ callback: @escaping (ProductsRepositoryState) -> Void) {
         self.callback = callback
     }
@@ -51,7 +35,7 @@ extension ProductFeatureRepository: ProductsRepositoryInterface {
     }
 }
 
-extension ProductFeatureRepository: ProductDetailRepoitoryInterface {
+extension ProductFeatureRepository: ProductDetailRepoitory {
     func getProduct(with id: String) -> Product? {
         return self.persistence.getProduct(with: id)
     }

@@ -1,13 +1,13 @@
 import Foundation
 
 final class ProductsViewModel {
-    private let repository: ProductsRepositoryInterface
+    private let repository: ProductsRepository
     private weak var routing: Routing?
     
     private var productRows: [ProductRowDisplayInfo] = []
     private var callback: (ProductsState) -> Void = { _ in }
     
-    init(repository: ProductsRepositoryInterface, routing: Routing) {
+    init(repository: ProductsRepository, routing: Routing) {
         self.repository = repository
         self.routing = routing
     }
