@@ -1,16 +1,14 @@
 import Foundation
 
 enum ProductsRepositoryState: Equatable {
-    case updateAll
-    case update(row: Int)
+    case updateAll([Product])
+    case update(id: String)
     case error
 }
 
 protocol ProductsRepositoryInterface {
     func onProductsChange(_ callback: @escaping (ProductsRepositoryState) -> Void)
     func getProducts()
-    func getNumberOfProducts() -> Int
-    func getProduct(at index: Int) -> Product?
 }
 
 protocol ProductDetailRepoitoryInterface {
@@ -44,20 +42,12 @@ extension ProductFeatureRepository: ProductsRepositoryInterface {
             switch result {
             case let .success(products):
                 strongSelf.persistence.store(products)
-                strongSelf.callback(.updateAll)
+                strongSelf.callback(.updateAll(products))
                 
             case .failure:
                 strongSelf.callback(.error)
             }
         }
-    }
-    
-    func getNumberOfProducts() -> Int {
-        return self.persistence.getNumberOfProducts()
-    }
-    
-    func getProduct(at index: Int) -> Product? {
-        return self.persistence.getProduct(at: index)
     }
 }
 
@@ -67,8 +57,7 @@ extension ProductFeatureRepository: ProductDetailRepoitoryInterface {
     }
     
     func toggleIsFavorited(with id: String) {
-        self.persistence.toggleIsFavorited(with: id).map { index in
-            self.callback(.update(row: index))
-        }
+        self.persistence.toggleIsFavorited(with: id)
+        self.callback(.update(id: id))
     }
 }

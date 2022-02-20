@@ -34,7 +34,7 @@ final class ProductFeatureRepositoryTests: XCTestCase {
         self.subject.getProducts()
         
         XCTAssertEqual(self.webService.getProductsCallCount, 1)
-        XCTAssertEqual(states, [.updateAll])
+        XCTAssertEqual(states, [.updateAll([product])])
         XCTAssertEqual(self.persistence.storeCallCount, 1)
         XCTAssertEqual(self.persistence.receivedProducts, [product])
     }
@@ -55,34 +55,6 @@ final class ProductFeatureRepositoryTests: XCTestCase {
         XCTAssertTrue(self.persistence.receivedProducts.isEmpty)
     }
     
-    func testGetNumberOfProducts() {
-        let product = Product(
-            id: "ABC",
-            title: "This is a product",
-            description: "nothing to mention here",
-            volume: nil
-        )
-        self.persistence.store([product])
-        
-        XCTAssertEqual(self.subject.getNumberOfProducts(), 1)
-    }
-    
-    func testGetProductAtIndex() {
-        let product = Product(
-            id: "ABC",
-            title: "This is a product",
-            description: "nothing to mention here",
-            volume: nil
-        )
-        self.persistence.expectedProduct = product
-        
-        let result = self.subject.getProduct(at: 9)
-        
-        XCTAssertEqual(self.persistence.getProductAtIndexCallCount, 1)
-        XCTAssertEqual(self.persistence.receivedIndex, 9)
-        XCTAssertEqual(result, product)
-    }
-    
     func testGetProductWithId() {
         let product = Product(
             id: "ABC",
@@ -101,7 +73,6 @@ final class ProductFeatureRepositoryTests: XCTestCase {
     
     func testToggleIsFavorited() {
         let productId = "ABC"
-        self.persistence.expectedIndex = 9
         
         var states: [ProductsRepositoryState] = []
         self.subject.onProductsChange { state in
@@ -112,6 +83,6 @@ final class ProductFeatureRepositoryTests: XCTestCase {
         
         XCTAssertEqual(self.persistence.toggleIsFavoritedCallCount, 1)
         XCTAssertEqual(self.persistence.receivedProductId, productId)
-        XCTAssertEqual(states, [.update(row: 9)])
+        XCTAssertEqual(states, [.update(id: productId)])
     }
 }
