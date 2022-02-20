@@ -54,7 +54,7 @@ final class ProductsViewModel {
     }
     
     func presentProductDetail(at index: Int) {
-        guard let id = self.repository.getProductId(at: index) else {
+        guard let id = self.repository.getProduct(at: index)?.id else {
             self.callback(.error)
             return
         }

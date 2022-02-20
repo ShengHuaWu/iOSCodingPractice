@@ -87,7 +87,7 @@ final class ProductsViewModelTests: XCTestCase {
         
         subject.presentProductDetail(at: 0)
         
-        XCTAssertEqual(self.repository.getProductIdCallCount, 1)
+        XCTAssertEqual(self.repository.getProductCallCount, 1)
         XCTAssertEqual(self.routing.presentProductDetailCallCount, 1)
         XCTAssertEqual(self.routing.receivedProductId, "ABC")
     }

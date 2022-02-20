@@ -11,7 +11,6 @@ protocol ProductsRepositoryInterface {
     func getProducts()
     func getNumberOfProducts() -> Int
     func getProduct(at index: Int) -> Product?
-    func getProductId(at index: Int) -> String?
 }
 
 protocol ProductDetailRepoitoryInterface {
@@ -62,14 +61,6 @@ extension ProductFeatureRepository: ProductsRepositoryInterface {
         }
         
         return self.products[index]
-    }
-    
-    func getProductId(at index: Int) -> String? {
-        guard index < self.products.count else {
-            return nil
-        }
-        
-        return self.products[index].id
     }
 }
 

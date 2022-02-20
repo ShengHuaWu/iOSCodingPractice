@@ -6,7 +6,6 @@ final class MockProductsRepository: ProductsRepositoryInterface {
     
     private(set) var getProductsCallCount = 0
     private(set) var getProductCallCount = 0
-    private(set) var getProductIdCallCount = 0
     var expectedProducts: [Product] = []
     var expectedError: Error!
     
@@ -32,11 +31,5 @@ final class MockProductsRepository: ProductsRepositoryInterface {
         self.getProductCallCount += 1
         
         return self.expectedProducts[index]
-    }
-    
-    func getProductId(at index: Int) -> String? {
-        self.getProductIdCallCount += 1
-        
-        return self.expectedProducts[index].id
     }
 }
