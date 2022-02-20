@@ -1,4 +1,4 @@
-struct Product: Decodable {
+struct Product: Decodable, Equatable {
     // Ignore `isFavorited` during decoding
     enum CodingKeys: String, CodingKey {
         case id, title, description, volume

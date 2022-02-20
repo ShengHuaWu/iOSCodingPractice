@@ -20,12 +20,13 @@ protocol ProductDetailRepoitoryInterface {
 
 final class ProductFeatureRepository {
     private let webService: WebService
+    private let persistence: Persistence
     
-    private var products: [Product] = []
     private var callback: (ProductsRepositoryState) -> Void = { _ in }
     
-    init(webService: WebService) {
+    init(webService: WebService, persistence: Persistence) {
         self.webService = webService
+        self.persistence = persistence
     }
 }
 
@@ -42,7 +43,7 @@ extension ProductFeatureRepository: ProductsRepositoryInterface {
             
             switch result {
             case let .success(products):
-                strongSelf.products.append(contentsOf: products)
+                strongSelf.persistence.store(products)
                 strongSelf.callback(.updateAll)
                 
             case .failure:
@@ -52,32 +53,22 @@ extension ProductFeatureRepository: ProductsRepositoryInterface {
     }
     
     func getNumberOfProducts() -> Int {
-        return self.products.count
+        return self.persistence.getNumberOfProducts()
     }
     
     func getProduct(at index: Int) -> Product? {
-        guard index < self.products.count else {
-            return nil
-        }
-        
-        return self.products[index]
+        return self.persistence.getProduct(at: index)
     }
 }
 
 extension ProductFeatureRepository: ProductDetailRepoitoryInterface {
     func getProduct(with id: String) -> Product? {
-        return self.products.first(where: { $0.id == id })
+        return self.persistence.getProduct(with: id)
     }
     
     func toggleIsFavorited(with id: String) {
-        guard let index = self.products.firstIndex(where: { $0.id == id }) else {
-            return
+        self.persistence.toggleIsFavorited(with: id).map { index in
+            self.callback(.update(row: index))
         }
-        
-        var product = self.products.remove(at: index)
-        product.isFavorited.toggle()
-        self.products.insert(product, at: index)
-        
-        self.callback(.update(row: index))
     }
 }

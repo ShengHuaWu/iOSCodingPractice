@@ -14,7 +14,10 @@ final class Router {
             urlSession: .shared,
             dataProcessor: .init(jsonDecoder: .init())
         )
-        let repository = ProductFeatureRepository(webService: webServiceClient)
+        let repository = ProductFeatureRepository(
+            webService: webServiceClient,
+            persistence: PersistenceClient()
+        )
         self.repository = repository
         let viewModel = ProductsViewModel(
             repository: repository,

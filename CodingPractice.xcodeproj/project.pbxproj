@@ -19,6 +19,9 @@
 		9BB6060427BAF02400D8E5D1 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB6060327BAF02400D8E5D1 /* Router.swift */; };
 		9BB6060627BAF1CE00D8E5D1 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB6060527BAF1CE00D8E5D1 /* ProductDetailViewController.swift */; };
 		9BB6060C27BAF3D500D8E5D1 /* MockRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB6060B27BAF3D500D8E5D1 /* MockRouting.swift */; };
+		9BD4A80827C25A6F00349D41 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4A80727C25A6F00349D41 /* Persistence.swift */; };
+		9BD4A80B27C25B9500349D41 /* PersistenceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4A80A27C25B9500349D41 /* PersistenceClient.swift */; };
+		9BD4A80E27C25F1300349D41 /* MockPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4A80D27C25F1300349D41 /* MockPersistence.swift */; };
 		9BF1A52D27BC3DCF0084D631 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF1A52C27BC3DCF0084D631 /* ProductDetailViewModel.swift */; };
 		9BF85EB527B9292000E78364 /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EB427B9292000E78364 /* ProductsViewController.swift */; };
 		9BF85EB727B9295000E78364 /* ProductsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EB627B9295000E78364 /* ProductsViewModel.swift */; };
@@ -59,6 +62,9 @@
 		9BB6060327BAF02400D8E5D1 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		9BB6060527BAF1CE00D8E5D1 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		9BB6060B27BAF3D500D8E5D1 /* MockRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRouting.swift; sourceTree = "<group>"; };
+		9BD4A80727C25A6F00349D41 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		9BD4A80A27C25B9500349D41 /* PersistenceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceClient.swift; sourceTree = "<group>"; };
+		9BD4A80D27C25F1300349D41 /* MockPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistence.swift; sourceTree = "<group>"; };
 		9BF1A52C27BC3DCF0084D631 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		9BF85EB427B9292000E78364 /* ProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewController.swift; sourceTree = "<group>"; };
 		9BF85EB627B9295000E78364 /* ProductsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModel.swift; sourceTree = "<group>"; };
@@ -114,6 +120,7 @@
 		9B13894427B59EF10070F53F /* CodingPractice */ = {
 			isa = PBXGroup;
 			children = (
+				9BD4A80927C25A7800349D41 /* Persistence */,
 				9B13895F27B5AA5E0070F53F /* WebService */,
 				9B13896027B5AA6C0070F53F /* Features */,
 				9B13894527B59EF10070F53F /* AppDelegate.swift */,
@@ -165,8 +172,28 @@
 				9BB6060B27BAF3D500D8E5D1 /* MockRouting.swift */,
 				D810F93227BD249400F8DD78 /* MockProductsRepository.swift */,
 				9BFDB35327BEE25C006327C3 /* MockProductDetailRepository.swift */,
+				9BD4A80D27C25F1300349D41 /* MockPersistence.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		9BD4A80927C25A7800349D41 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				9BD4A80727C25A6F00349D41 /* Persistence.swift */,
+				9BD4A80A27C25B9500349D41 /* PersistenceClient.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		9BD4A80C27C25F0700349D41 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				D810F8FC27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift */,
+				9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */,
+				9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */,
+			);
+			path = Features;
 			sourceTree = "<group>";
 		};
 		9BF85EB827B9299500E78364 /* Products */ = {
@@ -184,9 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				9BB6060A27BAF3AA00D8E5D1 /* Mocks */,
-				D810F8FC27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift */,
-				9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */,
-				9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */,
+				9BD4A80C27C25F0700349D41 /* Features */,
 			);
 			path = CodingPracticeTests;
 			sourceTree = "<group>";
@@ -294,6 +319,7 @@
 			files = (
 				9BB6060427BAF02400D8E5D1 /* Router.swift in Sources */,
 				9BF85ECB27B9303100E78364 /* WebService.swift in Sources */,
+				9BD4A80827C25A6F00349D41 /* Persistence.swift in Sources */,
 				9BFDB35027BEE179006327C3 /* ProductDetailState.swift in Sources */,
 				9BF85EB727B9295000E78364 /* ProductsViewModel.swift in Sources */,
 				9B13896227B5AA7B0070F53F /* DataProcessor.swift in Sources */,
@@ -301,6 +327,7 @@
 				9BB6060627BAF1CE00D8E5D1 /* ProductDetailViewController.swift in Sources */,
 				9BF85EB527B9292000E78364 /* ProductsViewController.swift in Sources */,
 				9B726E1D27C1090200A5EB80 /* ProductRowCell.swift in Sources */,
+				9BD4A80B27C25B9500349D41 /* PersistenceClient.swift in Sources */,
 				9B13894627B59EF10070F53F /* AppDelegate.swift in Sources */,
 				9BF1A52D27BC3DCF0084D631 /* ProductDetailViewModel.swift in Sources */,
 				D810F8FB27BD1F4200F8DD78 /* ProductFeatureRepository.swift in Sources */,
@@ -322,6 +349,7 @@
 				9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */,
 				D810F8FD27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift in Sources */,
 				9BFDB35227BEE223006327C3 /* ProductDetailViewModelTests.swift in Sources */,
+				9BD4A80E27C25F1300349D41 /* MockPersistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
