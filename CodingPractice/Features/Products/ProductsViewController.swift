@@ -26,27 +26,29 @@ final class ProductsViewController: UITableViewController {
         self.tableView.register(ProductRowCell.self, forCellReuseIdentifier: Constants.productCellId)
         
         self.viewModel.onStateChange { [weak self] state in
-            switch state {
-            case .loading:
-                // TODO: Show loading indicator
-                break
-                
-            case .loaded:
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
+            guard let strongSelf = self else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                switch state {
+                case .loading:
+                    // TODO: Show loading indicator
+                    break
+                    
+                case .loaded:
+                    strongSelf.tableView.reloadData()
+                    
+                case let .update(row):
+                    let indexPath = IndexPath(row: row, section: 0)
+                    strongSelf.tableView.cellForRow(at: indexPath).map { cell in
+                        strongSelf.configure(cell, at: row)
+                    }
+                    
+                case .error:
+                    // TODO: Show error alert
+                    break
                 }
-                
-            case let .update(row):
-                DispatchQueue.main.async {
-                    self?.tableView.reloadRows(
-                        at: [.init(row: row, section: 0)],
-                        with: .none
-                    )
-                }
-                
-            case .error:
-                // TODO: Show error alert
-                break
             }
         }
         
@@ -63,14 +65,19 @@ extension ProductsViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.productCellId, for: indexPath)
-        let displayInfo = self.viewModel.getProductRow(at: indexPath.row)
+        self.configure(cell, at: indexPath.row)
+        
+        return cell
+    }
+    
+    private func configure(_ cell: UITableViewCell, at index: Int) {
+        let displayInfo = self.viewModel.getProductRow(at: index)
+        
         cell.textLabel?.text = displayInfo.title
         
         let isFavorited = displayInfo.isFavorited
         cell.detailTextLabel?.textColor = isFavorited ? .red : .darkGray
         cell.detailTextLabel?.text = isFavorited ? "favorited" : "not favorited"
-        
-        return cell
     }
 }
 
