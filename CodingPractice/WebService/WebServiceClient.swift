@@ -22,19 +22,32 @@ final class WebServiceClient {
             return
         }
         
-        self.urlSession.dataTask(with: url) { [weak self] data, response, error in
+        self.perform(.init(url: url), errorContext: errorContext) { (result: Result<ProductsContainer, WebServiceError>) in
+            completion(result.map { $0.data })
+        }
+    }
+}
+
+// MARK: - Private
+private extension WebServiceClient {
+    func perform<Entity>(
+        _ request: URLRequest,
+        errorContext: String,
+        _ completion: @escaping (Result<Entity, WebServiceError>) -> Void
+    ) where Entity: Decodable {
+        self.urlSession.dataTask(with: request) { [weak self] data, response, error in
             guard let strongSelf = self else {
                 return
             }
             
             do {
-                let container: ProductsContainer = try strongSelf.dataProcessor.process(
+                let entity: Entity = try strongSelf.dataProcessor.process(
                     data: data,
                     response: response,
                     error: error,
                     errorContext: errorContext
                 )
-                completion(.success(container.data))
+                completion(.success(entity))
             } catch let error as WebServiceError {
                 completion(.failure(error))
             } catch let error {
