@@ -42,6 +42,11 @@ final class ProductsViewController: UITableViewController {
                     
                 case let .update(row):
                     let indexPath = IndexPath(row: row, section: 0)
+                    guard let visibleRows = strongSelf.tableView.indexPathsForVisibleRows,
+                       visibleRows.contains(indexPath) else {
+                        return
+                    }
+                    
                     strongSelf.tableView.cellForRow(at: indexPath).map { cell in
                         strongSelf.configure(cell, at: row)
                     }
