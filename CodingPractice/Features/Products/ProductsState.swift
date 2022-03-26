@@ -1,6 +1,6 @@
 enum ProductsState: Equatable {
     case loading
-    case loaded
-    case update(row: Int)
+    case loaded([ProductRowDisplayInfo])
+    case update(id: String, isFavorited: Bool)
     case error
 }

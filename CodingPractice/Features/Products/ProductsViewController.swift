@@ -6,6 +6,7 @@ final class ProductsViewController: UITableViewController {
     }
     
     private let viewModel: ProductsViewModel
+    private var productRows: [ProductRowDisplayInfo] = []
     
     init(viewModel: ProductsViewModel) {
         self.viewModel = viewModel
@@ -37,10 +38,24 @@ final class ProductsViewController: UITableViewController {
                     // TODO: Show loading indicator
                     break
                     
-                case .loaded:
+                case let .loaded(rows):
+                    strongSelf.productRows = rows
                     strongSelf.tableView.reloadData()
                     
-                case let .update(row):
+                case let .update(id, isFavorited):
+                    guard let row = strongSelf.productRows.firstIndex(where: { $0.id == id }) else {
+                        return
+                        
+                    }
+                    
+                    let displayInfo = strongSelf.productRows.remove(at: row)
+                    let newDisplayInfo = ProductRowDisplayInfo(
+                        id: id,
+                        title: displayInfo.title,
+                        isFavorited: isFavorited
+                    )
+                    strongSelf.productRows.insert(newDisplayInfo, at: row)
+                    
                     let indexPath = IndexPath(row: row, section: 0)
                     guard let visibleRows = strongSelf.tableView.indexPathsForVisibleRows,
                        visibleRows.contains(indexPath) else {
@@ -66,7 +81,7 @@ final class ProductsViewController: UITableViewController {
 
 extension ProductsViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.getNumberOfProducts()
+        return self.productRows.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -77,7 +92,7 @@ extension ProductsViewController {
     }
     
     private func configure(_ cell: UITableViewCell, at index: Int) {
-        let displayInfo = self.viewModel.getProductRow(at: index)
+        let displayInfo = self.productRows[index]
         
         cell.textLabel?.text = displayInfo.title
         
@@ -91,6 +106,6 @@ extension ProductsViewController {
 
 extension ProductsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.viewModel.presentProductDetail(at: indexPath.row)
+        self.viewModel.presentProductDetail(with: self.productRows[indexPath.row].id)
     }
 }

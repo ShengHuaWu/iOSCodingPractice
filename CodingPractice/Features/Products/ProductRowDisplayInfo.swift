@@ -1,4 +1,4 @@
-struct ProductRowDisplayInfo {
+struct ProductRowDisplayInfo: Equatable {
     let id: String
     let title: String
     let isFavorited: Bool

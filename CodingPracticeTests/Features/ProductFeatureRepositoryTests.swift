@@ -73,6 +73,9 @@ final class ProductFeatureRepositoryTests: XCTestCase {
     
     func testToggleIsFavorited() {
         let productId = "ABC"
+        let isFavorited = true
+        
+        self.persistence.expectedIsFavorited = isFavorited
         
         var states: [ProductsRepositoryState] = []
         self.subject.onProductsChange { state in
@@ -83,6 +86,6 @@ final class ProductFeatureRepositoryTests: XCTestCase {
         
         XCTAssertEqual(self.persistence.toggleIsFavoritedCallCount, 1)
         XCTAssertEqual(self.persistence.receivedProductId, productId)
-        XCTAssertEqual(states, [.update(id: productId)])
+        XCTAssertEqual(states, [.update(id: productId, isFavorited: isFavorited)])
     }
 }

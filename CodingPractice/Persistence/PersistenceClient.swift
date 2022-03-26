@@ -20,19 +20,21 @@ final class PersistenceClient {
         }
     }
     
-    func toggleIsFavorited(with id: String) {
+    func toggleIsFavorited(with id: String) -> Bool {
         self.queue.sync { [weak self] in
             guard let strongSelf = self else {
-                return
+                return false
             }
             
             guard let index = strongSelf.products.firstIndex(where: { $0.id == id }) else {
-                return
+                return false
             }
             
             var product = strongSelf.products.remove(at: index)
             product.isFavorited.toggle()
             strongSelf.products.insert(product, at: index)
+            
+            return product.isFavorited
         }
     }
 }

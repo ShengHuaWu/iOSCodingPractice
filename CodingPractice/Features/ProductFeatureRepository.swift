@@ -41,7 +41,7 @@ extension ProductFeatureRepository: ProductDetailRepoitory {
     }
     
     func toggleIsFavorited(with id: String) {
-        self.persistence.toggleIsFavorited(with: id)
-        self.callback(.update(id: id))
+        let isFavorited = self.persistence.toggleIsFavorited(with: id)
+        self.callback(.update(id: id, isFavorited: isFavorited))
     }
 }

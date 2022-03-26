@@ -9,6 +9,7 @@ final class MockPersistence: Persistence {
     var expectedProduct: Product!
     
     private(set) var toggleIsFavoritedCallCount = 0
+    var expectedIsFavorited = false
     
     func store(_ products: [Product]) {
         self.storeCallCount += 1
@@ -22,8 +23,10 @@ final class MockPersistence: Persistence {
         return self.expectedProduct
     }
     
-    func toggleIsFavorited(with id: String) {
+    func toggleIsFavorited(with id: String) -> Bool {
         self.toggleIsFavoritedCallCount += 1
         self.receivedProductId = id
+        
+        return self.expectedIsFavorited
     }
 }

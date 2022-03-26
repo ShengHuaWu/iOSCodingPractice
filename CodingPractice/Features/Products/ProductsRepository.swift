@@ -1,6 +1,6 @@
 enum ProductsRepositoryState: Equatable {
     case updateAll([Product])
-    case update(id: String)
+    case update(id: String, isFavorited: Bool)
     case error
 }
 
