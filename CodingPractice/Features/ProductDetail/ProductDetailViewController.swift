@@ -74,8 +74,10 @@ final class ProductDetailViewController: UIViewController {
                 strongSelf.descriptionLabal.text = displayInfo.description
                 if displayInfo.isFavorited {
                     strongSelf.favoriteButton.setTitle("Unfavorite", for: .normal)
+                    strongSelf.favoriteButton.setTitleColor(.red, for: .normal)
                 } else {
                     strongSelf.favoriteButton.setTitle("Favorite", for: .normal)
+                    strongSelf.favoriteButton.setTitleColor(.darkText, for: .normal)
                 }
                 
                 strongSelf.view.layoutIfNeeded()
