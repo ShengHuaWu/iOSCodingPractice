@@ -27,8 +27,8 @@ final class ProductDetailViewModelTests: XCTestCase {
         
         self.repository.expectedProduct = product
         
-        var states: [ProductDetailState] = []
-        self.subject.onProductDetailChange { state in
+        var states: [ProductDetailEvent] = []
+        self.subject.subscribe { state in
             states.append(state)
         }
         
@@ -55,8 +55,8 @@ final class ProductDetailViewModelTests: XCTestCase {
         
         self.repository.expectedProduct = product
         
-        var states: [ProductDetailState] = []
-        self.subject.onProductDetailChange { state in
+        var states: [ProductDetailEvent] = []
+        self.subject.subscribe { state in
             states.append(state)
         }
         

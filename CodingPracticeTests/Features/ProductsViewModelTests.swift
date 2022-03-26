@@ -26,8 +26,8 @@ final class ProductsViewModelTests: XCTestCase {
         )
         self.repository.expectedProducts = [product]
         
-        var states = [ProductsState]()
-        self.subject.onStateChange { state in
+        var states = [ProductsEvent]()
+        self.subject.subscribe { state in
             states.append(state)
         }
         
@@ -43,8 +43,8 @@ final class ProductsViewModelTests: XCTestCase {
         
         self.repository.expectedError = PlaceholderError()
         
-        var states = [ProductsState]()
-        self.subject.onStateChange { state in
+        var states = [ProductsEvent]()
+        self.subject.subscribe { state in
             states.append(state)
         }
         
@@ -64,8 +64,8 @@ final class ProductsViewModelTests: XCTestCase {
         )
         self.repository.expectedProducts = [product]
         
-        var states = [ProductsState]()
-        self.subject.onStateChange { state in
+        var states = [ProductsEvent]()
+        self.subject.subscribe { state in
             states.append(state)
         }
         

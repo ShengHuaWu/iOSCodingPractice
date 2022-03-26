@@ -63,12 +63,12 @@ final class ProductDetailViewController: UIViewController {
         self.addSubviews()
         self.configureLayoutConstraints()
         
-        self.viewModel.onProductDetailChange { [weak self] state in
+        self.viewModel.subscribe { [weak self] event in
             guard let strongSelf = self else {
                 return
             }
             
-            switch state {
+            switch event {
             case let .present(displayInfo):
                 strongSelf.titleLabel.text = displayInfo.title
                 strongSelf.descriptionLabal.text = displayInfo.description

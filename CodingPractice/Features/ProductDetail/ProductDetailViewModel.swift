@@ -4,14 +4,14 @@ final class ProductDetailViewModel {
     private let repository: ProductDetailRepoitory
     
     private let productId: String
-    private var callback: (ProductDetailState) -> Void = { _ in }
+    private var callback: (ProductDetailEvent) -> Void = { _ in }
     
     init(productId: String, repository: ProductDetailRepoitory) {
         self.productId = productId
         self.repository = repository
     }
     
-    func onProductDetailChange(_ callback: @escaping (ProductDetailState) -> Void) {
+    func subscribe(_ callback: @escaping (ProductDetailEvent) -> Void) {
         self.callback = callback
     }
     

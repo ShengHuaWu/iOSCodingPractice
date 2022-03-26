@@ -4,14 +4,14 @@ final class ProductsViewModel {
     private let repository: ProductsRepository
     private weak var routing: Routing?
     
-    private var callback: (ProductsState) -> Void = { _ in }
+    private var callback: (ProductsEvent) -> Void = { _ in }
     
     init(repository: ProductsRepository, routing: Routing) {
         self.repository = repository
         self.routing = routing
     }
     
-    func onStateChange(_ callback: @escaping (ProductsState) -> Void) {
+    func subscribe(_ callback: @escaping (ProductsEvent) -> Void) {
         self.repository.onProductsChange { result in
             switch result {
             case let .updateAll(products):

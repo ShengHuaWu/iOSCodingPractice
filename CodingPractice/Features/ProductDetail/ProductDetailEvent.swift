@@ -1,4 +1,4 @@
-enum ProductDetailState: Equatable {
+enum ProductDetailEvent: Equatable {
     case present(ProductDetailDisplayInfo)
     case error
 }
