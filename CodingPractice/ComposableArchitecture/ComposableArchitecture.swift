@@ -2,10 +2,10 @@ import ComposableArchitecture
 import Foundation
 
 struct AppState: Equatable {
-    var productRows: [ProductRowDisplayInfo]
+    var productRows: [ProductRowDisplayInfo] = []
 }
 
-enum AppAction {
+enum AppAction: Equatable {
     case fetchProducts
     case productsResponse(Result<[Product], WebServiceError>)
 }

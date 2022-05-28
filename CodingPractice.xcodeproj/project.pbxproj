@@ -15,6 +15,7 @@
 		9B13895C27B5A1220070F53F /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B13895B27B5A1220070F53F /* Product.swift */; };
 		9B13895E27B5AA490070F53F /* WebServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B13895D27B5AA490070F53F /* WebServiceError.swift */; };
 		9B13896227B5AA7B0070F53F /* DataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B13896127B5AA7B0070F53F /* DataProcessor.swift */; };
+		9B26FEF528428B060069291A /* ComposableArchitectureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */; };
 		9B726E1D27C1090200A5EB80 /* ProductRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B726E1C27C1090200A5EB80 /* ProductRowCell.swift */; };
 		9BABAA8F28411D4100AECB8D /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9BABAA8E28411D4100AECB8D /* ComposableArchitecture */; };
 		9BABAA9128411F8D00AECB8D /* ComposableArchitecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BABAA9028411F8D00AECB8D /* ComposableArchitecture.swift */; };
@@ -64,6 +65,7 @@
 		9B13895B27B5A1220070F53F /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		9B13895D27B5AA490070F53F /* WebServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceError.swift; sourceTree = "<group>"; };
 		9B13896127B5AA7B0070F53F /* DataProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProcessor.swift; sourceTree = "<group>"; };
+		9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitectureTests.swift; sourceTree = "<group>"; };
 		9B726E1C27C1090200A5EB80 /* ProductRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRowCell.swift; sourceTree = "<group>"; };
 		9BABAA9028411F8D00AECB8D /* ComposableArchitecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitecture.swift; sourceTree = "<group>"; };
 		9BB6060327BAF02400D8E5D1 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				9B13894427B59EF10070F53F /* CodingPractice */,
 				9BF85EBE27B92F3500E78364 /* CodingPracticeTests */,
 				9B13894327B59EF10070F53F /* Products */,
+				9B26FEF628428BF00069291A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,6 +171,13 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
+		9B26FEF628428BF00069291A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9BABAA9228411F9800AECB8D /* ComposableArchitecture */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,6 +225,7 @@
 				D810F8FC27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift */,
 				9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */,
 				9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */,
+				9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -278,6 +289,8 @@
 				9BF85EC227B92F3500E78364 /* PBXTargetDependency */,
 			);
 			name = CodingPracticeTests;
+			packageProductDependencies = (
+			);
 			productName = CodingPracticeTests;
 			productReference = 9BF85EBD27B92F3500E78364 /* CodingPracticeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -386,6 +399,7 @@
 				D810F8FD27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift in Sources */,
 				9BFDB35227BEE223006327C3 /* ProductDetailViewModelTests.swift in Sources */,
 				9BD4A80E27C25F1300349D41 /* MockPersistence.swift in Sources */,
+				9B26FEF528428B060069291A /* ComposableArchitectureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
