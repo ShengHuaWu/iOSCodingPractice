@@ -3,6 +3,7 @@ import Foundation
 
 struct AppState: Equatable {
     var productRows: [ProductRowDisplayInfo] = []
+    var errorMessage: String = ""
 }
 
 enum AppAction: Equatable {
@@ -29,9 +30,13 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .catchToEffect(AppAction.productsResponse)
         
     case let .productsResponse(.success(products)):
+        state.productRows = products.map(ProductRowDisplayInfo.init(product:))
+        
         return .none
         
     case let .productsResponse(.failure(error)):
+        state.errorMessage = error.description
+        
         return .none
     }
 }
