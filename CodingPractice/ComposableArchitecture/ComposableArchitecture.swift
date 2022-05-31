@@ -6,9 +6,29 @@ struct AppState: Equatable {
     var errorMessage: String = ""
 }
 
+struct AppError: Error, Equatable {
+    let context: String
+    let reason: String
+}
+
+extension AppError: CustomStringConvertible {
+    var description: String {
+        """
+        \(context) failed with \(reason)
+        """
+    }
+}
+
+extension AppError {
+    init(webServiceError: WebServiceError) {
+        self.context = webServiceError.context
+        self.reason = webServiceError.reason
+    }
+}
+
 enum AppAction: Equatable {
     case fetchProducts
-    case productsResponse(Result<[Product], WebServiceError>)
+    case productsResponse(Result<[Product], AppError>)
 }
 
 // TODO: Re-name XXXEnvironment
@@ -17,7 +37,7 @@ struct WebServiceClientEnvironment {
 }
 
 struct PersistenceEnvironment {
-    var storeProducts: ([Product]) -> Effect<[Product], WebServiceError>
+    var storeProducts: ([Product]) -> Effect<[Product], Never>
 }
 
 struct AppEnvironment {
@@ -32,6 +52,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         return environment
             .webServiceClient
             .getProducts()
+            .mapError(AppError.init(webServiceError:))
             .flatMap(environment.persistence.storeProducts)
             .receive(on: environment.mainQueue)
             .catchToEffect(AppAction.productsResponse)

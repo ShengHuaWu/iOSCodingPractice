@@ -76,9 +76,10 @@ final class ComposableArchitectureTests: XCTestCase {
         store.send(.fetchProducts)
         self.scheduler.advance()
         
-        store.receive(.productsResponse(.failure(webServiceError))) {
+        let appError = AppError(webServiceError: webServiceError)
+        store.receive(.productsResponse(.failure(appError))) {
             $0.productRows = []
-            $0.errorMessage = webServiceError.description
+            $0.errorMessage = appError.description
         }
     }
 }
