@@ -178,6 +178,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9B2B6DF82846081E0048498C /* ComposableArchitecture */ = {
+			isa = PBXGroup;
+			children = (
+				9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */,
+			);
+			path = ComposableArchitecture;
+			sourceTree = "<group>";
+		};
 		9BABAA9228411F9800AECB8D /* ComposableArchitecture */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,10 +230,10 @@
 		9BD4A80C27C25F0700349D41 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				9B2B6DF82846081E0048498C /* ComposableArchitecture */,
 				D810F8FC27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift */,
 				9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */,
 				9BFDB35127BEE223006327C3 /* ProductDetailViewModelTests.swift */,
-				9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";

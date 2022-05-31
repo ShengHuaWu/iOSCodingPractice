@@ -9,6 +9,12 @@ extension WebServiceClientEnvironment {
     }
 }
 
+extension PersistenceEnvironment {
+    static let unimplemented = Self { _ in
+        .failing("storeProducts has not been implemented")
+    }
+}
+
 private let fakeProducts: [Product] = [
     .init(
         id: "deedbeef-deed-beaf-deedbeefdeed",
@@ -30,6 +36,10 @@ extension WebServiceClientEnvironment {
     }
 }
 
+extension PersistenceEnvironment {
+    static let success = Self(storeProducts: Effect.init(value:))
+}
+
 final class ComposableArchitectureTests: XCTestCase {
     private let scheduler = DispatchQueue.test
     
@@ -39,7 +49,8 @@ final class ComposableArchitectureTests: XCTestCase {
             reducer: appReducer,
             environment: .init(
                 webServiceClient: .success,
-                mainQueue: scheduler.eraseToAnyScheduler()
+                mainQueue: scheduler.eraseToAnyScheduler(),
+                persistence: .success
             )
         )
         
@@ -57,7 +68,8 @@ final class ComposableArchitectureTests: XCTestCase {
             reducer: appReducer,
             environment: .init(
                 webServiceClient: .failure,
-                mainQueue: scheduler.eraseToAnyScheduler()
+                mainQueue: scheduler.eraseToAnyScheduler(),
+                persistence: .unimplemented
             )
         )
         
