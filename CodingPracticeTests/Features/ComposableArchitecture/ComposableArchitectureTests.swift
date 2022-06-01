@@ -10,19 +10,24 @@ extension WebServiceClientEnvironment {
 }
 
 extension PersistenceEnvironment {
-    static let unimplemented = Self { _ in
-        .failing("storeProducts has not been implemented")
-    }
+    static let unimplemented = Self(
+        storeProducts: { _ in
+            .failing("storeProducts has not been implemented")
+        },
+        getProduct: { _ in
+            .failing("getProduct has not been implemented")
+        }
+    )
 }
 
-private let fakeProducts: [Product] = [
-    .init(
-        id: "deedbeef-deed-beaf-deedbeefdeed",
-        title: "Blob",
-        description: "This is Blob",
-        volume: 9
-    )
-]
+private let fakeProduct = Product(
+    id: "deedbeef-deed-beaf-deedbeefdeed",
+    title: "Blob",
+    description: "This is Blob",
+    volume: 9
+)
+
+private let fakeProducts: [Product] = [fakeProduct]
 
 private let webServiceError = WebServiceError(context: "getContext", reason: "Failure")
 
@@ -37,7 +42,12 @@ extension WebServiceClientEnvironment {
 }
 
 extension PersistenceEnvironment {
-    static let success = Self(storeProducts: Effect.init(value:))
+    static let success = Self(
+        storeProducts: Effect.init(value:),
+        getProduct: { _ in
+            Effect(value: fakeProduct)
+        }
+    )
 }
 
 final class ComposableArchitectureTests: XCTestCase {
@@ -55,7 +65,7 @@ final class ComposableArchitectureTests: XCTestCase {
         )
         
         store.send(.fetchProducts)
-        self.scheduler.advance()
+        scheduler.advance()
         
         store.receive(.productsResponse(.success(fakeProducts))) {
             $0.productRows = fakeProducts.map(ProductRowDisplayInfo.init(product:))
@@ -74,12 +84,31 @@ final class ComposableArchitectureTests: XCTestCase {
         )
         
         store.send(.fetchProducts)
-        self.scheduler.advance()
+        scheduler.advance()
         
         let appError = AppError(webServiceError: webServiceError)
         store.receive(.productsResponse(.failure(appError))) {
             $0.productRows = []
             $0.errorMessage = appError.description
+        }
+    }
+    
+    func testTapProductRow() {
+        let store = TestStore(
+            initialState: .init(),
+            reducer: appReducer,
+            environment: .init(
+                webServiceClient: .unimplemented,
+                mainQueue: scheduler.eraseToAnyScheduler(),
+                persistence: .success
+            )
+        )
+        
+        store.send(.tapProductRow("deedbeef-deed-beaf-deedbeefdeed"))
+        scheduler.advance()
+        
+        store.receive(.presentProduct(fakeProduct)) {
+            $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
         }
     }
 }

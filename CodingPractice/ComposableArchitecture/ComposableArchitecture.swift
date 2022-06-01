@@ -3,6 +3,7 @@ import Foundation
 
 struct AppState: Equatable {
     var productRows: [ProductRowDisplayInfo] = []
+    var productDetail: ProductDetailDisplayInfo?
     var errorMessage: String = ""
 }
 
@@ -29,6 +30,8 @@ extension AppError {
 enum AppAction: Equatable {
     case fetchProducts
     case productsResponse(Result<[Product], AppError>)
+    case tapProductRow(String)
+    case presentProduct(Product)
 }
 
 // TODO: Re-name XXXEnvironment
@@ -38,6 +41,7 @@ struct WebServiceClientEnvironment {
 
 struct PersistenceEnvironment {
     var storeProducts: ([Product]) -> Effect<[Product], Never>
+    var getProduct: (String) -> Effect<Product, Never>
 }
 
 struct AppEnvironment {
@@ -64,6 +68,19 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         
     case let .productsResponse(.failure(error)):
         state.errorMessage = error.description
+        
+        return .none
+        
+    case let .tapProductRow(productId):
+        return environment
+            .persistence
+            .getProduct(productId)
+            .receive(on: environment.mainQueue)
+            .map(AppAction.presentProduct)
+            .eraseToEffect()
+        
+    case let .presentProduct(product):
+        state.productDetail = ProductDetailDisplayInfo(product: product)
         
         return .none
     }
