@@ -1,6 +1,6 @@
 import Foundation
 
-struct WebServiceError: Error {
+struct WebServiceError: Error, Equatable {
     let context: String
     let reason: String
 }
