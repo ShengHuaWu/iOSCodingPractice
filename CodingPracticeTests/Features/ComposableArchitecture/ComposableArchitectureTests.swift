@@ -16,6 +16,9 @@ extension PersistenceEnvironment {
         },
         getProduct: { _ in
             .failing("getProduct has not been implemented")
+        },
+        toggleProductIsFavorited: { _ in
+            .failing("toggleProductIsFavorited has not been implemented")
         }
     )
 }
@@ -28,6 +31,15 @@ private let fakeProduct = Product(
 )
 
 private let fakeProducts: [Product] = [fakeProduct]
+
+private extension Product {
+    func toggleIsFavorite() -> Self {
+        var newProduct = self
+        newProduct.isFavorited.toggle()
+        
+        return newProduct
+    }
+}
 
 private let webServiceError = WebServiceError(context: "getContext", reason: "Failure")
 
@@ -46,6 +58,9 @@ extension PersistenceEnvironment {
         storeProducts: Effect.init(value:),
         getProduct: { _ in
             Effect(value: fakeProduct)
+        },
+        toggleProductIsFavorited: { _ in
+            Effect(value: fakeProduct.toggleIsFavorite())
         }
     )
 }
@@ -109,6 +124,25 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.presentProduct(fakeProduct)) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
+        }
+    }
+    
+    func testTapProductIsFavorite() {
+        let store = TestStore(
+            initialState: .init(),
+            reducer: appReducer,
+            environment: .init(
+                webServiceClient: .unimplemented,
+                mainQueue: scheduler.eraseToAnyScheduler(),
+                persistence: .success
+            )
+        )
+        
+        store.send(.tapProductIsFavorite("deedbeef-deed-beaf-deedbeefdeed"))
+        scheduler.advance()
+        
+        store.receive(.presentProduct(fakeProduct.toggleIsFavorite())) {
+            $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
         }
     }
 }

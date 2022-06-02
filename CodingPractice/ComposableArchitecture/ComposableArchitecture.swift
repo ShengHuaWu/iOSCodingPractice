@@ -32,6 +32,7 @@ enum AppAction: Equatable {
     case productsResponse(Result<[Product], AppError>)
     case tapProductRow(String)
     case presentProduct(Product)
+    case tapProductIsFavorite(String)
 }
 
 // TODO: Re-name XXXEnvironment
@@ -42,6 +43,7 @@ struct WebServiceClientEnvironment {
 struct PersistenceEnvironment {
     var storeProducts: ([Product]) -> Effect<[Product], Never>
     var getProduct: (String) -> Effect<Product, Never>
+    var toggleProductIsFavorited: (String) -> Effect<Product, Never>
 }
 
 struct AppEnvironment {
@@ -83,5 +85,13 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         state.productDetail = ProductDetailDisplayInfo(product: product)
         
         return .none
+        
+    case let .tapProductIsFavorite(productId):
+        return environment
+            .persistence
+            .toggleProductIsFavorited(productId)
+            .receive(on: environment.mainQueue)
+            .map(AppAction.presentProduct)
+            .eraseToEffect()
     }
 }
