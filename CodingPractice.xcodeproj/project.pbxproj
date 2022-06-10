@@ -30,6 +30,7 @@
 		9BD4A81427C26FD900349D41 /* ProductDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4A81327C26FD900349D41 /* ProductDetailRepository.swift */; };
 		9BD4A81627C2706900349D41 /* ProductDetailDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD4A81527C2706900349D41 /* ProductDetailDisplayInfo.swift */; };
 		9BF1A52D27BC3DCF0084D631 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF1A52C27BC3DCF0084D631 /* ProductDetailViewModel.swift */; };
+		9BF7398128535EA800669DEE /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF7398028535EA800669DEE /* ProductListView.swift */; };
 		9BF85EB527B9292000E78364 /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EB427B9292000E78364 /* ProductsViewController.swift */; };
 		9BF85EB727B9295000E78364 /* ProductsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EB627B9295000E78364 /* ProductsViewModel.swift */; };
 		9BF85EC727B92F5800E78364 /* ProductsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF85EC627B92F5800E78364 /* ProductsViewModelTests.swift */; };
@@ -79,6 +80,7 @@
 		9BD4A81327C26FD900349D41 /* ProductDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailRepository.swift; sourceTree = "<group>"; };
 		9BD4A81527C2706900349D41 /* ProductDetailDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailDisplayInfo.swift; sourceTree = "<group>"; };
 		9BF1A52C27BC3DCF0084D631 /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
+		9BF7398028535EA800669DEE /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
 		9BF85EB427B9292000E78364 /* ProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewController.swift; sourceTree = "<group>"; };
 		9BF85EB627B9295000E78364 /* ProductsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModel.swift; sourceTree = "<group>"; };
 		9BF85EBD27B92F3500E78364 /* CodingPracticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodingPracticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				9BABAA9028411F8D00AECB8D /* ComposableArchitecture.swift */,
+				9BF7398028535EA800669DEE /* ProductListView.swift */,
 			);
 			path = ComposableArchitecture;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BF7398128535EA800669DEE /* ProductListView.swift in Sources */,
 				9BB6060427BAF02400D8E5D1 /* Router.swift in Sources */,
 				9BF85ECB27B9303100E78364 /* WebService.swift in Sources */,
 				9BABAA9128411F8D00AECB8D /* ComposableArchitecture.swift in Sources */,
