@@ -11,30 +11,41 @@ final class Router {
     private weak var repository: ProductFeatureRepository?
     
     func presentProducts(in window: UIWindow) {
-        let viewController: UIViewController
+        let webServiceClient = WebServiceClient(
+            urlSession: .shared,
+            dataProcessor: .init(jsonDecoder: .init())
+        )
+        let persistenceClient = PersistenceClient()
+        
+        let rootViewController: UIViewController
         if (ProcessInfo.processInfo.environment["enable_swift_ui"] != nil) {
-            let productListView = ProductListView()
-            viewController = UIHostingController(rootView: productListView)
-        } else {
-            let webServiceClient = WebServiceClient(
-                urlSession: .shared,
-                dataProcessor: .init(jsonDecoder: .init())
+            let environment = AppEnvironment.makeLive(
+                webServiceClient: webServiceClient,
+                persistenceClient: persistenceClient
             )
+            let productListView = ProductListView(store: .init(
+                initialState: .init(),
+                reducer: appReducer.debug(),
+                environment: environment
+            ))
+            rootViewController = UIHostingController(rootView: productListView)
+        } else {
             let repository = ProductFeatureRepository(
                 webService: webServiceClient,
-                persistence: PersistenceClient()
+                persistence: persistenceClient
             )
             self.repository = repository
             let viewModel = ProductsViewModel(
                 repository: repository,
                 routing: self
             )
-            viewController = ProductsViewController(viewModel: viewModel)
+            let viewController = ProductsViewController(viewModel: viewModel)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.rootNavigationController = navigationController
+            rootViewController = navigationController
         }
         
-        let navigationController = UINavigationController(rootViewController: viewController)
-        self.rootNavigationController = navigationController
-        window.rootViewController = navigationController
+        window.rootViewController = rootViewController
         window.makeKeyAndVisible()
     }
 }

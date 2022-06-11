@@ -1,3 +1,4 @@
+import ComposableArchitecture
 import Foundation
 
 final class PersistenceClient {
@@ -14,9 +15,26 @@ final class PersistenceClient {
         }
     }
     
+    func store(products: [Product]) -> Effect<[Product], Never> {
+        return self.queue.sync { [weak self] in
+            self?.products.append(contentsOf: products)
+            
+            return Effect(value: products)
+        }
+    }
+    
     func getProduct(with id: String) -> Product? {
         return self.queue.sync { [weak self] in
             return self?.products.first(where: { $0.id == id })
+        }
+    }
+    
+    func getProduct(id: String) -> Effect<Product, Never> {
+        return self.queue.sync { [weak self] in
+            // TODO: Remove force unwrapped optional
+            let product: Product! = self?.products.first(where: { $0.id == id })
+            
+            return Effect(value: product)
         }
     }
     
@@ -35,6 +53,18 @@ final class PersistenceClient {
             strongSelf.products.insert(product, at: index)
             
             return product.isFavorited
+        }
+    }
+    
+    func toggleIsFavorited(id: String) -> Effect<Product, Never> {
+        return self.queue.sync { [weak self] in
+            // TODO: Remove force unwrapped optional
+            let index: Int! = self?.products.firstIndex(where: { $0.id == id })
+            var product: Product! = self?.products.remove(at: index)
+            product.isFavorited.toggle()
+            self?.products.insert(product, at: index)
+            
+            return Effect(value: product)
         }
     }
 }

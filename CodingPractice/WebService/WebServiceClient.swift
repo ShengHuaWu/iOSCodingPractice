@@ -1,3 +1,4 @@
+import ComposableArchitecture
 import Foundation
 
 final class WebServiceClient {
@@ -25,6 +26,49 @@ final class WebServiceClient {
         self.perform(.init(url: url), errorContext: errorContext) { (result: Result<ProductsContainer, WebServiceError>) in
             completion(result.map { $0.data })
         }
+    }
+    
+    func getProducts() -> Effect<[Product], WebServiceError> {
+        let urlStr = "https://api.gousto.co.uk/products/v2.0/products"
+        let errorContext = "Get products"
+                
+        guard let url = URL(string: urlStr) else {
+            let webServiceError = WebServiceError(
+                context: errorContext,
+                reason: "invalid url string: \(urlStr)"
+            )
+            
+            return Effect(error: webServiceError)
+        }
+        
+        return self.urlSession
+            .dataTaskPublisher(for: .init(url: url))
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200...299 ~= httpResponse.statusCode else {
+                    throw WebServiceError(
+                        context: errorContext,
+                        reason: "invalid response: \(String(describing: response))"
+                    )
+                }
+                
+                return data
+            }
+            .decode(type: ProductsContainer.self, decoder: JSONDecoder())
+            .map(\.data)
+            .mapError { error in
+                if let webServiceError = error as? WebServiceError {
+                    return webServiceError
+                }
+                
+                let webServiceError = WebServiceError(
+                    context: errorContext,
+                    reason: "unexpected error: \(error.localizedDescription)"
+                )
+                
+                return webServiceError
+            }
+            .eraseToEffect()
     }
 }
 
