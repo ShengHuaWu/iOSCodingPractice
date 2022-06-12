@@ -42,13 +42,11 @@ struct AppEnvironment {
 }
 
 extension AppEnvironment {
-    static func makeLive(persistenceClient: PersistenceClient) -> Self {
-        .init(
-            webService: .live,
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
-            persistence: .makeLive(persistenceClient: persistenceClient)
-        )
-    }
+    static let live = Self(
+        webService: .live,
+        mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+        persistence: .live
+    )
 }
 
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in

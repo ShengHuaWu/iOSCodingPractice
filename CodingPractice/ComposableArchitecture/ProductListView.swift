@@ -21,13 +21,12 @@ struct ProductListView: View {
     }
 }
 
-// TODO: Use mock data to construct environment
-//struct ProductListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProductListView(store: .init(
-//            initialState: .init(),
-//            reducer: appReducer,
-//            environment: .live
-//        ))
-//    }
-//}
+struct ProductListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProductListView(store: .init(
+            initialState: .init(),
+            reducer: appReducer,
+            environment: .live
+        ))
+    }
+}

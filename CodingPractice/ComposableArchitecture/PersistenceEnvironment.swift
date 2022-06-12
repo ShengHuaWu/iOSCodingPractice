@@ -7,18 +7,39 @@ struct PersistenceEnvironment {
     var toggleProductIsFavorited: (String) -> Effect<Product?, Never>
 }
 
+private var storedProducts: [Product] = []
+
+// Use a serial queue to protect reading & writing operations
+private let queue = DispatchQueue(label: "PersistenceEnvironment")
+
 extension PersistenceEnvironment {
-    static func makeLive(persistenceClient: PersistenceClient) -> Self {
-        return .init(
-            storeProducts: { products in
-                persistenceClient.store(products: products)
-            },
-            getProduct: { id in
-                persistenceClient.getProduct(id: id)
-            },
-            toggleProductIsFavorited: { id in
-                persistenceClient.toggleIsFavorited(id: id)
+    static let live = Self(
+        storeProducts: { products in
+            queue.sync {
+                storedProducts.append(contentsOf: products)
+                
+                return Effect(value: products)
             }
-        )
-    }
+        },
+        getProduct: { id in
+            queue.sync {
+                let product = storedProducts.first(where: { $0.id == id })
+                
+                return Effect(value: product)
+            }
+        },
+        toggleProductIsFavorited: { id in
+            queue.sync {
+                guard let index = storedProducts.firstIndex(where: { $0.id == id }) else {
+                    return Effect(value: nil)
+                }
+                
+                var product = storedProducts.remove(at: index)
+                product.isFavorited.toggle()
+                storedProducts.insert(product, at: index)
+                
+                return Effect(value: product)
+            }
+        }
+    )
 }
