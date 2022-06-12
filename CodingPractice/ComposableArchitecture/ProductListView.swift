@@ -7,7 +7,7 @@ struct ProductListView: View {
     var body: some View {
         WithViewStore(self.store) { viewStore in
             NavigationView {
-                Form {
+                List {
                     ForEach(viewStore.productRows) { row in
                         Text(row.title)
                     }

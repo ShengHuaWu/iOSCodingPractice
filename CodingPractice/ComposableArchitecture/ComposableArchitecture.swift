@@ -42,12 +42,9 @@ struct AppEnvironment {
 }
 
 extension AppEnvironment {
-    static func makeLive(
-        webServiceClient: WebServiceClient,
-        persistenceClient: PersistenceClient
-    ) -> Self {
+    static func makeLive(persistenceClient: PersistenceClient) -> Self {
         .init(
-            webService: .makeLive(webServiceClient: webServiceClient),
+            webService: .live,
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
             persistence: .makeLive(persistenceClient: persistenceClient)
         )

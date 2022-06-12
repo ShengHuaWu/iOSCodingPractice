@@ -11,18 +11,11 @@ final class Router {
     private weak var repository: ProductFeatureRepository?
     
     func presentProducts(in window: UIWindow) {
-        let webServiceClient = WebServiceClient(
-            urlSession: .shared,
-            dataProcessor: .init(jsonDecoder: .init())
-        )
         let persistenceClient = PersistenceClient()
         
         let rootViewController: UIViewController
         if (ProcessInfo.processInfo.environment["enable_swift_ui"] != nil) {
-            let environment = AppEnvironment.makeLive(
-                webServiceClient: webServiceClient,
-                persistenceClient: persistenceClient
-            )
+            let environment = AppEnvironment.makeLive(persistenceClient: persistenceClient)
             let productListView = ProductListView(store: .init(
                 initialState: .init(),
                 reducer: appReducer.debug(),
@@ -30,6 +23,10 @@ final class Router {
             ))
             rootViewController = UIHostingController(rootView: productListView)
         } else {
+            let webServiceClient = WebServiceClient(
+                urlSession: .shared,
+                dataProcessor: .init(jsonDecoder: .init())
+            )
             let repository = ProductFeatureRepository(
                 webService: webServiceClient,
                 persistence: persistenceClient
