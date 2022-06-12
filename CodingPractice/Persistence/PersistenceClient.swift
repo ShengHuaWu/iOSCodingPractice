@@ -29,10 +29,9 @@ final class PersistenceClient {
         }
     }
     
-    func getProduct(id: String) -> Effect<Product, Never> {
+    func getProduct(id: String) -> Effect<Product?, Never> {
         return self.queue.sync { [weak self] in
-            // TODO: Remove force unwrapped optional
-            let product: Product! = self?.products.first(where: { $0.id == id })
+            let product = self?.products.first(where: { $0.id == id })
             
             return Effect(value: product)
         }
@@ -56,13 +55,16 @@ final class PersistenceClient {
         }
     }
     
-    func toggleIsFavorited(id: String) -> Effect<Product, Never> {
+    func toggleIsFavorited(id: String) -> Effect<Product?, Never> {
         return self.queue.sync { [weak self] in
-            // TODO: Remove force unwrapped optional
-            let index: Int! = self?.products.firstIndex(where: { $0.id == id })
-            var product: Product! = self?.products.remove(at: index)
+            guard let strongSelf = self,
+                  let index = strongSelf.products.firstIndex(where: { $0.id == id }) else {
+                return Effect(value: nil)
+            }
+            
+            var product = strongSelf.products.remove(at: index)
             product.isFavorited.toggle()
-            self?.products.insert(product, at: index)
+            strongSelf.products.insert(product, at: index)
             
             return Effect(value: product)
         }

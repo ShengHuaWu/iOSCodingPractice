@@ -42,9 +42,8 @@ struct WebServiceClientEnvironment {
 
 struct PersistenceEnvironment {
     var storeProducts: ([Product]) -> Effect<[Product], Never>
-    // TODO: change to `Product?`
-    var getProduct: (String) -> Effect<Product, Never>
-    var toggleProductIsFavorited: (String) -> Effect<Product, Never>
+    var getProduct: (String) -> Effect<Product?, Never>
+    var toggleProductIsFavorited: (String) -> Effect<Product?, Never>
 }
 
 struct AppEnvironment {
@@ -116,7 +115,13 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .persistence
             .getProduct(productId)
             .receive(on: environment.mainQueue)
-            .map(AppAction.presentProduct)
+            .flatMap { product -> Effect<AppAction, Never> in
+                guard let product = product else {
+                    return .none
+                }
+                
+                return Effect(value: AppAction.presentProduct(product))
+            }
             .eraseToEffect()
         
     case let .presentProduct(product):
@@ -129,7 +134,13 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .persistence
             .toggleProductIsFavorited(productId)
             .receive(on: environment.mainQueue)
-            .map(AppAction.presentProduct)
+            .flatMap { product -> Effect<AppAction, Never> in
+                guard let product = product else {
+                    return .none
+                }
+                
+                return Effect(value: AppAction.presentProduct(product))
+            }
             .eraseToEffect()
     }
 }
