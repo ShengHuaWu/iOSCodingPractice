@@ -35,45 +35,10 @@ enum AppAction: Equatable {
     case tapProductIsFavorite(String)
 }
 
-// TODO: Re-name XXXEnvironment
-struct WebServiceClientEnvironment {
-    var getProducts: () -> Effect<[Product], WebServiceError>
-}
-
-struct PersistenceEnvironment {
-    var storeProducts: ([Product]) -> Effect<[Product], Never>
-    var getProduct: (String) -> Effect<Product?, Never>
-    var toggleProductIsFavorited: (String) -> Effect<Product?, Never>
-}
-
 struct AppEnvironment {
-    var webServiceClient: WebServiceClientEnvironment
+    var webService: WebServiceEnvironment
     var mainQueue: AnySchedulerOf<DispatchQueue>
     var persistence: PersistenceEnvironment
-}
-
-extension WebServiceClientEnvironment {
-    static func makeLive(webServiceClient: WebServiceClient) -> Self {
-        return .init {
-            webServiceClient.getProducts()
-        }
-    }
-}
-
-extension PersistenceEnvironment {
-    static func makeLive(persistenceClient: PersistenceClient) -> Self {
-        return .init(
-            storeProducts: { products in
-                persistenceClient.store(products: products)
-            },
-            getProduct: { id in
-                persistenceClient.getProduct(id: id)
-            },
-            toggleProductIsFavorited: { id in
-                persistenceClient.toggleIsFavorited(id: id)
-            }
-        )
-    }
 }
 
 extension AppEnvironment {
@@ -82,7 +47,7 @@ extension AppEnvironment {
         persistenceClient: PersistenceClient
     ) -> Self {
         .init(
-            webServiceClient: .makeLive(webServiceClient: webServiceClient),
+            webService: .makeLive(webServiceClient: webServiceClient),
             mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
             persistence: .makeLive(persistenceClient: persistenceClient)
         )
@@ -93,7 +58,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
     switch action {
     case .fetchProducts:
         return environment
-            .webServiceClient
+            .webService
             .getProducts()
             .mapError(AppError.init(webServiceError:))
             .flatMap(environment.persistence.storeProducts)
@@ -115,13 +80,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .persistence
             .getProduct(productId)
             .receive(on: environment.mainQueue)
-            .flatMap { product -> Effect<AppAction, Never> in
-                guard let product = product else {
-                    return .none
-                }
-                
-                return Effect(value: AppAction.presentProduct(product))
-            }
+            .flatMap(sendPresentProductActionIfNeeded)
             .eraseToEffect()
         
     case let .presentProduct(product):
@@ -134,13 +93,15 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .persistence
             .toggleProductIsFavorited(productId)
             .receive(on: environment.mainQueue)
-            .flatMap { product -> Effect<AppAction, Never> in
-                guard let product = product else {
-                    return .none
-                }
-                
-                return Effect(value: AppAction.presentProduct(product))
-            }
+            .flatMap(sendPresentProductActionIfNeeded)
             .eraseToEffect()
     }
+}
+
+private func sendPresentProductActionIfNeeded(_ product: Product?) -> Effect<AppAction, Never> {
+    guard let product = product else {
+        return .none
+    }
+    
+    return Effect(value: .presentProduct(product))
 }

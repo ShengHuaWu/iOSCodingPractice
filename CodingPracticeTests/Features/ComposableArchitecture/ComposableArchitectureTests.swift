@@ -3,7 +3,7 @@ import XCTest
 
 @testable import CodingPractice
 
-extension WebServiceClientEnvironment {
+extension WebServiceEnvironment {
     static let unimplemented = Self {
         .failing("getProducts has not been implemented")
     }
@@ -43,7 +43,7 @@ private extension Product {
 
 private let webServiceError = WebServiceError(context: "getContext", reason: "Failure")
 
-extension WebServiceClientEnvironment {
+extension WebServiceEnvironment {
     static let success = Self {
         Effect(value: fakeProducts)
     }
@@ -73,7 +73,7 @@ final class ComposableArchitectureTests: XCTestCase {
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .success,
+                webService: .success,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
@@ -92,7 +92,7 @@ final class ComposableArchitectureTests: XCTestCase {
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .failure,
+                webService: .failure,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .unimplemented
             )
@@ -113,7 +113,7 @@ final class ComposableArchitectureTests: XCTestCase {
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .unimplemented,
+                webService: .unimplemented,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
@@ -132,7 +132,7 @@ final class ComposableArchitectureTests: XCTestCase {
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .unimplemented,
+                webService: .unimplemented,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )

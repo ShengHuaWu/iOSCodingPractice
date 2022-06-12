@@ -17,6 +17,8 @@
 		9B13896227B5AA7B0070F53F /* DataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B13896127B5AA7B0070F53F /* DataProcessor.swift */; };
 		9B26FEF528428B060069291A /* ComposableArchitectureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */; };
 		9B726E1D27C1090200A5EB80 /* ProductRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B726E1C27C1090200A5EB80 /* ProductRowCell.swift */; };
+		9B9869E12855F19100129A78 /* WebServiceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9869E02855F19100129A78 /* WebServiceEnvironment.swift */; };
+		9B9869E32855F1D200129A78 /* PersistenceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9869E22855F1D200129A78 /* PersistenceEnvironment.swift */; };
 		9BABAA8F28411D4100AECB8D /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9BABAA8E28411D4100AECB8D /* ComposableArchitecture */; };
 		9BABAA9128411F8D00AECB8D /* ComposableArchitecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BABAA9028411F8D00AECB8D /* ComposableArchitecture.swift */; };
 		9BB6060427BAF02400D8E5D1 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB6060327BAF02400D8E5D1 /* Router.swift */; };
@@ -68,6 +70,8 @@
 		9B13896127B5AA7B0070F53F /* DataProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProcessor.swift; sourceTree = "<group>"; };
 		9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitectureTests.swift; sourceTree = "<group>"; };
 		9B726E1C27C1090200A5EB80 /* ProductRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRowCell.swift; sourceTree = "<group>"; };
+		9B9869E02855F19100129A78 /* WebServiceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceEnvironment.swift; sourceTree = "<group>"; };
+		9B9869E22855F1D200129A78 /* PersistenceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceEnvironment.swift; sourceTree = "<group>"; };
 		9BABAA9028411F8D00AECB8D /* ComposableArchitecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitecture.swift; sourceTree = "<group>"; };
 		9BB6060327BAF02400D8E5D1 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		9BB6060527BAF1CE00D8E5D1 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 			children = (
 				9BABAA9028411F8D00AECB8D /* ComposableArchitecture.swift */,
 				9BF7398028535EA800669DEE /* ProductListView.swift */,
+				9B9869E02855F19100129A78 /* WebServiceEnvironment.swift */,
+				9B9869E22855F1D200129A78 /* PersistenceEnvironment.swift */,
 			);
 			path = ComposableArchitecture;
 			sourceTree = "<group>";
@@ -392,10 +398,12 @@
 				9BD4A81427C26FD900349D41 /* ProductDetailRepository.swift in Sources */,
 				D810F8FB27BD1F4200F8DD78 /* ProductFeatureRepository.swift in Sources */,
 				9B13895C27B5A1220070F53F /* Product.swift in Sources */,
+				9B9869E32855F1D200129A78 /* PersistenceEnvironment.swift in Sources */,
 				9B13894827B59EF10070F53F /* SceneDelegate.swift in Sources */,
 				9B13895E27B5AA490070F53F /* WebServiceError.swift in Sources */,
 				9BD4A81027C26F4800349D41 /* ProductRowDisplayInfo.swift in Sources */,
 				9B13895A27B5A06E0070F53F /* WebServiceClient.swift in Sources */,
+				9B9869E12855F19100129A78 /* WebServiceEnvironment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
