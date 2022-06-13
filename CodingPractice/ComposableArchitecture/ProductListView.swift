@@ -9,14 +9,30 @@ struct ProductListView: View {
             NavigationView {
                 List {
                     ForEach(viewStore.productRows) { row in
-                        VStack(alignment: .leading) {
-                            Text(row.title).font(.title)
-                            if row.isFavorited {
-                                Text("favorited").foregroundColor(.red)
-                            } else {
-                                Text("not favorited")
+                        NavigationLink(
+                            tag: viewStore.state.productDetail,
+                            selection: viewStore.binding(
+                                get: {  $0.productDetail },
+                                send: { _ in AppAction.tapProductRow(row.id) }
+                            ),
+                            destination: {
+                                if viewStore.state.productDetail != nil {
+                                    ProductDetailView()
+                                } else {
+                                    Text("No product detail")
+                                }
+                            },
+                            label: {
+                                VStack(alignment: .leading) {
+                                    Text(row.title).font(.title)
+                                    if row.isFavorited {
+                                        Text("favorited").foregroundColor(.red)
+                                    } else {
+                                        Text("not favorited")
+                                    }
+                                }
                             }
-                        }
+                        )
                     }
                 }
                 .navigationTitle("Product List")

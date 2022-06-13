@@ -33,6 +33,7 @@ enum AppAction: Equatable {
     case tapProductRow(String)
     case presentProduct(Product)
     case tapProductIsFavorite(String)
+    // TODO: New action of re-assign product detail
 }
 
 struct AppEnvironment {
@@ -65,8 +66,8 @@ extension WebServiceEnvironment {
 extension PersistenceEnvironment {
     static let preview = Self(
         storeProducts: { Effect(value: $0) },
-        getProduct: { _ in .failing("Unimplemented") },
-        toggleProductIsFavorited: { _ in .failing("Unimplemented") }
+        getProduct: { _ in Effect(value: productsForPreview.first) },
+        toggleProductIsFavorited: { _ in Effect(value: productsForPreview.first) }
     )
 }
 

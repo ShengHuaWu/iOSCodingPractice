@@ -1,4 +1,4 @@
-struct ProductDetailDisplayInfo: Equatable {
+struct ProductDetailDisplayInfo: Equatable, Hashable {
     let title: String
     let description: String
     let isFavorited: Bool
