@@ -10,7 +10,7 @@ struct ProductListView: View {
                 List {
                     ForEach(viewStore.productRows) { row in
                         VStack(alignment: .leading) {
-                            Text(row.title)
+                            Text(row.title).font(.title)
                             if row.isFavorited {
                                 Text("favorited").foregroundColor(.red)
                             } else {
