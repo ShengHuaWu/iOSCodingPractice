@@ -49,6 +49,36 @@ extension AppEnvironment {
     )
 }
 
+#if DEBUG
+private let productsForPreview = [
+    Product(id: "ABC", title: "Fake Product 1", description: "Blob blob blob", volume: 5),
+    .init(id: "EDF", title: "Fake Product 2", description: "This is the fake product 2", volume: 9, isFavorited: true),
+    .init(id: "XYZ", title: "What the hell", description: "Nothing to say", volume: 8)
+]
+
+extension WebServiceEnvironment {
+    static let preview = Self {
+        Effect(value: productsForPreview)
+    }
+}
+
+extension PersistenceEnvironment {
+    static let preview = Self(
+        storeProducts: { Effect(value: $0) },
+        getProduct: { _ in .failing("Unimplemented") },
+        toggleProductIsFavorited: { _ in .failing("Unimplemented") }
+    )
+}
+
+extension AppEnvironment {
+    static let preview = Self(
+        webService: .preview,
+        mainQueue: .immediate,
+        persistence: .preview
+    )
+}
+#endif
+
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
     case .fetchProducts:

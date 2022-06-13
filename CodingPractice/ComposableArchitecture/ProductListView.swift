@@ -9,7 +9,14 @@ struct ProductListView: View {
             NavigationView {
                 List {
                     ForEach(viewStore.productRows) { row in
-                        Text(row.title)
+                        VStack(alignment: .leading) {
+                            Text(row.title)
+                            if row.isFavorited {
+                                Text("favorited").foregroundColor(.red)
+                            } else {
+                                Text("not favorited")
+                            }
+                        }
                     }
                 }
                 .navigationTitle("Product List")
@@ -26,7 +33,7 @@ struct ProductListView_Previews: PreviewProvider {
         ProductListView(store: .init(
             initialState: .init(),
             reducer: appReducer,
-            environment: .live
+            environment: .preview
         ))
     }
 }
