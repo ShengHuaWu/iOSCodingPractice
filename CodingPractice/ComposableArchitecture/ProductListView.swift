@@ -9,11 +9,10 @@ struct ProductListView: View {
             NavigationView {
                 List {
                     ForEach(viewStore.productRows) { row in
-                        // TODO: Fix selection
                         NavigationLink(
-                            tag: viewStore.state.productDetail,
+                            tag: row.id,
                             selection: viewStore.binding(
-                                get: {  $0.productDetail },
+                                get: {  $0.productDetail?.id },
                                 send: { _ in AppAction.tapProductRow(row.id) }
                             ),
                             destination: {
