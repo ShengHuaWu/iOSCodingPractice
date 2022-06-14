@@ -9,6 +9,7 @@ struct ProductListView: View {
             NavigationView {
                 List {
                     ForEach(viewStore.productRows) { row in
+                        // TODO: Fix selection
                         NavigationLink(
                             tag: viewStore.state.productDetail,
                             selection: viewStore.binding(
@@ -17,7 +18,7 @@ struct ProductListView: View {
                             ),
                             destination: {
                                 if viewStore.state.productDetail != nil {
-                                    ProductDetailView()
+                                    ProductDetailView(store: self.store)
                                 } else {
                                     Text("No product detail")
                                 }
@@ -37,6 +38,7 @@ struct ProductListView: View {
                 }
                 .navigationTitle("Product List")
                 .onAppear {
+                    viewStore.send(.leaveProductDetail)
                     viewStore.send(.fetchProducts)
                 }
             }

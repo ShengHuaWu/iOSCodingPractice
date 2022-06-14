@@ -108,7 +108,7 @@ final class ComposableArchitectureTests: XCTestCase {
         }
     }
     
-    func testTapProductRow() {
+    func testTapProductRowAndThenLeave() {
         let store = TestStore(
             initialState: .init(),
             reducer: appReducer,
@@ -124,6 +124,10 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.presentProduct(fakeProduct)) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
+        }
+        
+        store.send(.leaveProductDetail) {
+            $0.productDetail = nil
         }
     }
     

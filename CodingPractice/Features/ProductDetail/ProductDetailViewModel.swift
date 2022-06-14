@@ -22,6 +22,7 @@ final class ProductDetailViewModel {
         }
         
         let displayInfo = ProductDetailDisplayInfo(
+            id: product.id,
             title: product.title,
             description: product.description,
             isFavorited: product.isFavorited

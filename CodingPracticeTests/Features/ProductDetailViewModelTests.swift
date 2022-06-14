@@ -38,6 +38,7 @@ final class ProductDetailViewModelTests: XCTestCase {
         XCTAssertEqual(self.repository.receivedProductId, self.productId)
         
         let expectedDisplayInfo = ProductDetailDisplayInfo(
+            id: product.id,
             title: product.title,
             description: product.description,
             isFavorited: false
@@ -67,6 +68,7 @@ final class ProductDetailViewModelTests: XCTestCase {
         XCTAssertEqual(self.repository.receivedProductId, self.productId)
         
         let expectedDisplayInfo = ProductDetailDisplayInfo(
+            id: product.id,
             title: product.title,
             description: product.description,
             isFavorited: false

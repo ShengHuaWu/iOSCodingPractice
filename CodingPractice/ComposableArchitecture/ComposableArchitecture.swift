@@ -27,13 +27,14 @@ extension AppError {
     }
 }
 
+// TODO: Re-name actions to app features
 enum AppAction: Equatable {
     case fetchProducts
     case productsResponse(Result<[Product], AppError>)
     case tapProductRow(String)
     case presentProduct(Product)
+    case leaveProductDetail
     case tapProductIsFavorite(String)
-    // TODO: New action of re-assign product detail
 }
 
 struct AppEnvironment {
@@ -83,6 +84,10 @@ extension AppEnvironment {
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
     case .fetchProducts:
+        guard state.productRows.isEmpty else {
+            return .none
+        }
+        
         return environment
             .webService
             .getProducts()
@@ -111,6 +116,11 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         
     case let .presentProduct(product):
         state.productDetail = ProductDetailDisplayInfo(product: product)
+        
+        return .none
+        
+    case .leaveProductDetail:
+        state.productDetail = nil
         
         return .none
         
