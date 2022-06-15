@@ -27,36 +27,69 @@ extension AppError {
     }
 }
 
+// TODO: Re-name actions to app features
 enum AppAction: Equatable {
     case fetchProducts
     case productsResponse(Result<[Product], AppError>)
     case tapProductRow(String)
     case presentProduct(Product)
+    case leaveProductDetail
     case tapProductIsFavorite(String)
 }
 
-// TODO: Re-name XXXEnvironment
-struct WebServiceClientEnvironment {
-    var getProducts: () -> Effect<[Product], WebServiceError>
-}
-
-struct PersistenceEnvironment {
-    var storeProducts: ([Product]) -> Effect<[Product], Never>
-    var getProduct: (String) -> Effect<Product, Never>
-    var toggleProductIsFavorited: (String) -> Effect<Product, Never>
-}
-
 struct AppEnvironment {
-    var webServiceClient: WebServiceClientEnvironment
+    var webService: WebServiceEnvironment
     var mainQueue: AnySchedulerOf<DispatchQueue>
     var persistence: PersistenceEnvironment
 }
 
+extension AppEnvironment {
+    static let live = Self(
+        webService: .live,
+        mainQueue: DispatchQueue.main.eraseToAnyScheduler(),
+        persistence: .live
+    )
+}
+
+#if DEBUG
+private let productsForPreview = [
+    Product(id: "ABC", title: "Fake Product 1", description: "Blob blob blob", volume: 5),
+    .init(id: "EDF", title: "Fake Product 2", description: "This is the fake product 2", volume: 9, isFavorited: true),
+    .init(id: "XYZ", title: "What the hell", description: "Nothing to say", volume: 8)
+]
+
+extension WebServiceEnvironment {
+    static let preview = Self {
+        Effect(value: productsForPreview)
+    }
+}
+
+extension PersistenceEnvironment {
+    static let preview = Self(
+        storeProducts: { Effect(value: $0) },
+        getProduct: { _ in Effect(value: productsForPreview.first) },
+        toggleProductIsFavorited: { _ in Effect(value: productsForPreview.first) }
+    )
+}
+
+extension AppEnvironment {
+    static let preview = Self(
+        webService: .preview,
+        mainQueue: .immediate,
+        persistence: .preview
+    )
+}
+#endif
+
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
     case .fetchProducts:
+        guard state.productRows.isEmpty else {
+            return .none
+        }
+        
         return environment
-            .webServiceClient
+            .webService
             .getProducts()
             .mapError(AppError.init(webServiceError:))
             .flatMap(environment.persistence.storeProducts)
@@ -78,11 +111,20 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .persistence
             .getProduct(productId)
             .receive(on: environment.mainQueue)
-            .map(AppAction.presentProduct)
+            .flatMap(sendPresentProductActionIfNeeded)
             .eraseToEffect()
         
     case let .presentProduct(product):
         state.productDetail = ProductDetailDisplayInfo(product: product)
+        if let index = state.productRows.firstIndex(where: { $0.id == product.id }) {
+            state.productRows.remove(at: index)
+            state.productRows.insert(.init(product: product), at: index)
+        }
+        
+        return .none
+        
+    case .leaveProductDetail:
+        state.productDetail = nil
         
         return .none
         
@@ -91,7 +133,15 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .persistence
             .toggleProductIsFavorited(productId)
             .receive(on: environment.mainQueue)
-            .map(AppAction.presentProduct)
+            .flatMap(sendPresentProductActionIfNeeded)
             .eraseToEffect()
     }
+}
+
+private func sendPresentProductActionIfNeeded(_ product: Product?) -> Effect<AppAction, Never> {
+    guard let product = product else {
+        return .none
+    }
+    
+    return Effect(value: .presentProduct(product))
 }

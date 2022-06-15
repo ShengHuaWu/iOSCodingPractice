@@ -3,7 +3,7 @@ import XCTest
 
 @testable import CodingPractice
 
-extension WebServiceClientEnvironment {
+extension WebServiceEnvironment {
     static let unimplemented = Self {
         .failing("getProducts has not been implemented")
     }
@@ -43,7 +43,7 @@ private extension Product {
 
 private let webServiceError = WebServiceError(context: "getContext", reason: "Failure")
 
-extension WebServiceClientEnvironment {
+extension WebServiceEnvironment {
     static let success = Self {
         Effect(value: fakeProducts)
     }
@@ -73,7 +73,7 @@ final class ComposableArchitectureTests: XCTestCase {
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .success,
+                webService: .success,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
@@ -92,7 +92,7 @@ final class ComposableArchitectureTests: XCTestCase {
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .failure,
+                webService: .failure,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .unimplemented
             )
@@ -108,12 +108,12 @@ final class ComposableArchitectureTests: XCTestCase {
         }
     }
     
-    func testTapProductRow() {
+    func testTapProductRowAndThenLeave() {
         let store = TestStore(
             initialState: .init(),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .unimplemented,
+                webService: .unimplemented,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
@@ -125,14 +125,18 @@ final class ComposableArchitectureTests: XCTestCase {
         store.receive(.presentProduct(fakeProduct)) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
         }
+        
+        store.send(.leaveProductDetail) {
+            $0.productDetail = nil
+        }
     }
     
     func testTapProductIsFavorite() {
         let store = TestStore(
-            initialState: .init(),
+            initialState: .init(productRows: fakeProducts.map(ProductRowDisplayInfo.init(product:))),
             reducer: appReducer,
             environment: .init(
-                webServiceClient: .unimplemented,
+                webService: .unimplemented,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
@@ -143,6 +147,9 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.presentProduct(fakeProduct.toggleIsFavorite())) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
+            $0.productRows = [
+                ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())
+            ]
         }
     }
 }
