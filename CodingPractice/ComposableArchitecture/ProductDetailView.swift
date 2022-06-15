@@ -9,7 +9,23 @@ struct ProductDetailView: View {
             NavigationView {
                 VStack {
                     Text(viewStore.state.productDetail?.description ?? "Product Description")
-                        .font(.body)
+                        .font(.title2)
+                    Spacer()
+                    Button(
+                        action: {
+                            viewStore.send(.tapProductIsFavorite(viewStore.state.productDetail!.id))
+                        },
+                        label: {
+                            if viewStore.state.productDetail?.isFavorited == true {
+                                Text("Unfavorite")
+                                    .foregroundColor(.gray)
+                            } else {
+                                Text("Favorite")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    ).font(.title3)
+                    Spacer()
                 }
                 
             }

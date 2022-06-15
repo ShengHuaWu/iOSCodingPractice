@@ -133,7 +133,7 @@ final class ComposableArchitectureTests: XCTestCase {
     
     func testTapProductIsFavorite() {
         let store = TestStore(
-            initialState: .init(),
+            initialState: .init(productRows: fakeProducts.map(ProductRowDisplayInfo.init(product:))),
             reducer: appReducer,
             environment: .init(
                 webService: .unimplemented,
@@ -147,6 +147,9 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.presentProduct(fakeProduct.toggleIsFavorite())) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
+            $0.productRows = [
+                ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())
+            ]
         }
     }
 }

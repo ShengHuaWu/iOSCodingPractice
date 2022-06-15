@@ -116,6 +116,10 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         
     case let .presentProduct(product):
         state.productDetail = ProductDetailDisplayInfo(product: product)
+        if let index = state.productRows.firstIndex(where: { $0.id == product.id }) {
+            state.productRows.remove(at: index)
+            state.productRows.insert(.init(product: product), at: index)
+        }
         
         return .none
         
