@@ -37,7 +37,6 @@ struct ProductListView: View {
                 }
                 .navigationTitle("Product List")
                 .onAppear {
-                    viewStore.send(.leaveProductDetail)
                     viewStore.send(.fetchProducts)
                 }
             }

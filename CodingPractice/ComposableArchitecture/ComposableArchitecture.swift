@@ -33,7 +33,6 @@ enum AppAction: Equatable {
     case productsResponse(Result<[Product], AppError>)
     case tapProductRow(String)
     case presentProduct(Product)
-    case leaveProductDetail
     case tapProductIsFavorite(String)
 }
 
@@ -84,6 +83,8 @@ extension AppEnvironment {
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
     case .fetchProducts:
+        state.productDetail = nil
+        
         guard state.productRows.isEmpty else {
             return .none
         }
@@ -120,11 +121,6 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             state.productRows.remove(at: index)
             state.productRows.insert(.init(product: product), at: index)
         }
-        
-        return .none
-        
-    case .leaveProductDetail:
-        state.productDetail = nil
         
         return .none
         

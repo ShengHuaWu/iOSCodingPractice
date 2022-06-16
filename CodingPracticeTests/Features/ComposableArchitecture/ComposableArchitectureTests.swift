@@ -80,6 +80,7 @@ final class ComposableArchitectureTests: XCTestCase {
         )
         
         store.send(.fetchProducts)
+        
         scheduler.advance()
         
         store.receive(.productsResponse(.success(fakeProducts))) {
@@ -108,7 +109,7 @@ final class ComposableArchitectureTests: XCTestCase {
         }
     }
     
-    func testTapProductRowAndThenLeave() {
+    func testTapProductRow() {
         let store = TestStore(
             initialState: .init(),
             reducer: appReducer,
@@ -124,10 +125,6 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.presentProduct(fakeProduct)) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
-        }
-        
-        store.send(.leaveProductDetail) {
-            $0.productDetail = nil
         }
     }
     
