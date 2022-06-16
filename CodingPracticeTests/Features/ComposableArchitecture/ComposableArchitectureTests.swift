@@ -68,7 +68,7 @@ extension PersistenceEnvironment {
 final class ComposableArchitectureTests: XCTestCase {
     private let scheduler = DispatchQueue.test
     
-    func testFetchProductSuccess() {
+    func testLoadProductListSuccess() {
         let store = TestStore(
             initialState: .init(),
             reducer: appReducer,
@@ -79,16 +79,16 @@ final class ComposableArchitectureTests: XCTestCase {
             )
         )
         
-        store.send(.fetchProducts)
+        store.send(.loadProductList)
         
         scheduler.advance()
         
-        store.receive(.productsResponse(.success(fakeProducts))) {
+        store.receive(.productListLoaded(.success(fakeProducts))) {
             $0.productRows = fakeProducts.map(ProductRowDisplayInfo.init(product:))
         }
     }
     
-    func testFetchProductFailure() {
+    func testLoadProductListFailure() {
         let store = TestStore(
             initialState: .init(),
             reducer: appReducer,
@@ -99,17 +99,17 @@ final class ComposableArchitectureTests: XCTestCase {
             )
         )
         
-        store.send(.fetchProducts)
+        store.send(.loadProductList)
         scheduler.advance()
         
         let appError = AppError(webServiceError: webServiceError)
-        store.receive(.productsResponse(.failure(appError))) {
+        store.receive(.productListLoaded(.failure(appError))) {
             $0.productRows = []
             $0.errorMessage = appError.description
         }
     }
     
-    func testTapProductRow() {
+    func testLoadProduct() {
         let store = TestStore(
             initialState: .init(),
             reducer: appReducer,
@@ -120,15 +120,15 @@ final class ComposableArchitectureTests: XCTestCase {
             )
         )
         
-        store.send(.tapProductRow("deedbeef-deed-beaf-deedbeefdeed"))
+        store.send(.loadProduct("deedbeef-deed-beaf-deedbeefdeed"))
         scheduler.advance()
         
-        store.receive(.presentProduct(fakeProduct)) {
+        store.receive(.productLoaded(fakeProduct)) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
         }
     }
     
-    func testTapProductIsFavorite() {
+    func testToggleProductIsFavorite() {
         let store = TestStore(
             initialState: .init(productRows: fakeProducts.map(ProductRowDisplayInfo.init(product:))),
             reducer: appReducer,
@@ -139,10 +139,10 @@ final class ComposableArchitectureTests: XCTestCase {
             )
         )
         
-        store.send(.tapProductIsFavorite("deedbeef-deed-beaf-deedbeefdeed"))
+        store.send(.toggleProductIsFavorite("deedbeef-deed-beaf-deedbeefdeed"))
         scheduler.advance()
         
-        store.receive(.presentProduct(fakeProduct.toggleIsFavorite())) {
+        store.receive(.productLoaded(fakeProduct.toggleIsFavorite())) {
             $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
             $0.productRows = [
                 ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())

@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Foundation
 
+// TODO: Split into product list state and product state
 struct AppState: Equatable {
     var productRows: [ProductRowDisplayInfo] = []
     var productDetail: ProductDetailDisplayInfo?
@@ -27,13 +28,12 @@ extension AppError {
     }
 }
 
-// TODO: Re-name actions to app features
 enum AppAction: Equatable {
-    case fetchProducts
-    case productsResponse(Result<[Product], AppError>)
-    case tapProductRow(String)
-    case presentProduct(Product)
-    case tapProductIsFavorite(String)
+    case loadProductList
+    case productListLoaded(Result<[Product], AppError>)
+    case loadProduct(String)
+    case productLoaded(Product)
+    case toggleProductIsFavorite(String)
 }
 
 struct AppEnvironment {
@@ -82,7 +82,7 @@ extension AppEnvironment {
 
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
-    case .fetchProducts:
+    case .loadProductList:
         state.productDetail = nil
         
         guard state.productRows.isEmpty else {
@@ -95,27 +95,27 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .mapError(AppError.init(webServiceError:))
             .flatMap(environment.persistence.storeProducts)
             .receive(on: environment.mainQueue)
-            .catchToEffect(AppAction.productsResponse)
+            .catchToEffect(AppAction.productListLoaded)
         
-    case let .productsResponse(.success(products)):
+    case let .productListLoaded(.success(products)):
         state.productRows = products.map(ProductRowDisplayInfo.init(product:))
                 
         return .none
         
-    case let .productsResponse(.failure(error)):
+    case let .productListLoaded(.failure(error)):
         state.errorMessage = error.description
         
         return .none
         
-    case let .tapProductRow(productId):
+    case let .loadProduct(productId):
         return environment
             .persistence
             .getProduct(productId)
             .receive(on: environment.mainQueue)
-            .flatMap(sendPresentProductActionIfNeeded)
+            .flatMap(sendProductLoadedActionIfNeeded)
             .eraseToEffect()
         
-    case let .presentProduct(product):
+    case let .productLoaded(product):
         state.productDetail = ProductDetailDisplayInfo(product: product)
         if let index = state.productRows.firstIndex(where: { $0.id == product.id }) {
             state.productRows.remove(at: index)
@@ -124,20 +124,20 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         
         return .none
         
-    case let .tapProductIsFavorite(productId):
+    case let .toggleProductIsFavorite(productId):
         return environment
             .persistence
             .toggleProductIsFavorited(productId)
             .receive(on: environment.mainQueue)
-            .flatMap(sendPresentProductActionIfNeeded)
+            .flatMap(sendProductLoadedActionIfNeeded)
             .eraseToEffect()
     }
 }
 
-private func sendPresentProductActionIfNeeded(_ product: Product?) -> Effect<AppAction, Never> {
+private func sendProductLoadedActionIfNeeded(_ product: Product?) -> Effect<AppAction, Never> {
     guard let product = product else {
         return .none
     }
     
-    return Effect(value: .presentProduct(product))
+    return Effect(value: .productLoaded(product))
 }

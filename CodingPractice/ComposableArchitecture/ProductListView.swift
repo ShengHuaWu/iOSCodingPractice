@@ -13,7 +13,7 @@ struct ProductListView: View {
                             tag: row.id,
                             selection: viewStore.binding(
                                 get: {  $0.productDetail?.id },
-                                send: { _ in AppAction.tapProductRow(row.id) }
+                                send: { _ in AppAction.loadProduct(row.id) }
                             ),
                             destination: {
                                 if viewStore.state.productDetail != nil {
@@ -37,7 +37,7 @@ struct ProductListView: View {
                 }
                 .navigationTitle("Product List")
                 .onAppear {
-                    viewStore.send(.fetchProducts)
+                    viewStore.send(.loadProductList)
                 }
             }
         }

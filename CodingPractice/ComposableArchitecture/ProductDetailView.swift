@@ -13,7 +13,7 @@ struct ProductDetailView: View {
                     Spacer()
                     Button(
                         action: {
-                            viewStore.send(.tapProductIsFavorite(viewStore.state.productDetail!.id))
+                            viewStore.send(.toggleProductIsFavorite(viewStore.state.productDetail!.id))
                         },
                         label: {
                             if viewStore.state.productDetail?.isFavorited == true {
