@@ -8,11 +8,11 @@ struct ProductListView: View {
         WithViewStore(self.store) { viewStore in
             NavigationView {
                 List {
-                    ForEach(viewStore.productRows) { row in
+                    ForEach(viewStore.state.productList.rows) { row in
                         NavigationLink(
                             tag: row.id,
                             selection: viewStore.binding(
-                                get: {  $0.productDetail?.id },
+                                get: {  $0.productDetail?.detail.id },
                                 send: { _ in AppAction.loadProduct(row.id) }
                             ),
                             destination: {
@@ -47,7 +47,9 @@ struct ProductListView: View {
 struct ProductListView_Previews: PreviewProvider {
     static var previews: some View {
         ProductListView(store: .init(
-            initialState: .init(),
+            initialState: .init(
+                productList: .init()
+            ),
             reducer: appReducer,
             environment: .preview
         ))

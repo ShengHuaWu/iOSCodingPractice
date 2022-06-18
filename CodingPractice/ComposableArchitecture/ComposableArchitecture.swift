@@ -2,9 +2,17 @@ import ComposableArchitecture
 import Foundation
 
 // TODO: Split into product list state and product state
+struct ProductListState: Equatable {
+    var rows: [ProductRowDisplayInfo] = []
+}
+
+struct ProductDetailState: Equatable {
+    var detail: ProductDetailDisplayInfo
+}
+
 struct AppState: Equatable {
-    var productRows: [ProductRowDisplayInfo] = []
-    var productDetail: ProductDetailDisplayInfo?
+    var productList: ProductListState
+    var productDetail: ProductDetailState?
     var errorMessage: String = ""
 }
 
@@ -85,7 +93,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
     case .loadProductList:
         state.productDetail = nil
         
-        guard state.productRows.isEmpty else {
+        guard state.productList.rows.isEmpty else {
             return .none
         }
         
@@ -98,7 +106,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .catchToEffect(AppAction.productListLoaded)
         
     case let .productListLoaded(.success(products)):
-        state.productRows = products.map(ProductRowDisplayInfo.init(product:))
+        state.productList.rows = products.map(ProductRowDisplayInfo.init(product:))
                 
         return .none
         
@@ -116,10 +124,11 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
             .eraseToEffect()
         
     case let .productLoaded(product):
-        state.productDetail = ProductDetailDisplayInfo(product: product)
-        if let index = state.productRows.firstIndex(where: { $0.id == product.id }) {
-            state.productRows.remove(at: index)
-            state.productRows.insert(.init(product: product), at: index)
+        let detail = ProductDetailDisplayInfo(product: product)
+        state.productDetail = ProductDetailState(detail: detail)
+        if let index = state.productList.rows.firstIndex(where: { $0.id == product.id }) {
+            state.productList.rows.remove(at: index)
+            state.productList.rows.insert(.init(product: product), at: index)
         }
         
         return .none

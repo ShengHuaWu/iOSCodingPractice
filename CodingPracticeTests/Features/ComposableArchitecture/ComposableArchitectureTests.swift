@@ -70,7 +70,9 @@ final class ComposableArchitectureTests: XCTestCase {
     
     func testLoadProductListSuccess() {
         let store = TestStore(
-            initialState: .init(),
+            initialState: .init(
+                productList: .init()
+            ),
             reducer: appReducer,
             environment: .init(
                 webService: .success,
@@ -84,13 +86,15 @@ final class ComposableArchitectureTests: XCTestCase {
         scheduler.advance()
         
         store.receive(.productListLoaded(.success(fakeProducts))) {
-            $0.productRows = fakeProducts.map(ProductRowDisplayInfo.init(product:))
+            $0.productList.rows = fakeProducts.map(ProductRowDisplayInfo.init(product:))
         }
     }
     
     func testLoadProductListFailure() {
         let store = TestStore(
-            initialState: .init(),
+            initialState: .init(
+                productList: .init()
+            ),
             reducer: appReducer,
             environment: .init(
                 webService: .failure,
@@ -104,14 +108,16 @@ final class ComposableArchitectureTests: XCTestCase {
         
         let appError = AppError(webServiceError: webServiceError)
         store.receive(.productListLoaded(.failure(appError))) {
-            $0.productRows = []
+            $0.productList.rows = []
             $0.errorMessage = appError.description
         }
     }
     
     func testLoadProduct() {
         let store = TestStore(
-            initialState: .init(),
+            initialState: .init(
+                productList: .init()
+            ),
             reducer: appReducer,
             environment: .init(
                 webService: .unimplemented,
@@ -124,13 +130,16 @@ final class ComposableArchitectureTests: XCTestCase {
         scheduler.advance()
         
         store.receive(.productLoaded(fakeProduct)) {
-            $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
+            let detail = ProductDetailDisplayInfo(product: fakeProduct)
+            $0.productDetail = .init(detail: detail)
         }
     }
     
     func testToggleProductIsFavorite() {
         let store = TestStore(
-            initialState: .init(productRows: fakeProducts.map(ProductRowDisplayInfo.init(product:))),
+            initialState: .init(
+                productList: .init(rows: fakeProducts.map(ProductRowDisplayInfo.init(product:)))
+            ),
             reducer: appReducer,
             environment: .init(
                 webService: .unimplemented,
@@ -143,8 +152,9 @@ final class ComposableArchitectureTests: XCTestCase {
         scheduler.advance()
         
         store.receive(.productLoaded(fakeProduct.toggleIsFavorite())) {
-            $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
-            $0.productRows = [
+            let detail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
+            $0.productDetail = .init(detail: detail)
+            $0.productList.rows = [
                 ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())
             ]
         }
