@@ -131,7 +131,7 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.productLoaded(fakeProduct)) {
             let detail = ProductDetailDisplayInfo(product: fakeProduct)
-            $0.productDetail = .init(detail: detail)
+            $0.productDetail = .init(productId: fakeProduct.id, detail: detail)
         }
     }
     
@@ -153,7 +153,7 @@ final class ComposableArchitectureTests: XCTestCase {
         
         store.receive(.productLoaded(fakeProduct.toggleIsFavorite())) {
             let detail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
-            $0.productDetail = .init(detail: detail)
+            $0.productDetail = .init(productId: fakeProduct.id, detail: detail)
             $0.productList.rows = [
                 ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())
             ]

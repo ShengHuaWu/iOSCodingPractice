@@ -1,13 +1,9 @@
 import ComposableArchitecture
 import Foundation
 
-// TODO: Split into product list state and product state
-struct ProductListState: Equatable {
-    var rows: [ProductRowDisplayInfo] = []
-}
-
-struct ProductDetailState: Equatable {
-    var detail: ProductDetailDisplayInfo
+struct NewAppState: Equatable {
+    var productList: ProductListState
+    var productDetail: ProductDetailState
 }
 
 struct AppState: Equatable {
@@ -34,6 +30,11 @@ extension AppError {
         self.context = webServiceError.context
         self.reason = webServiceError.reason
     }
+}
+
+enum NewAppAction: Equatable {
+    case productList(ProductListAction)
+    case productDetail(ProductDetailAction)
 }
 
 enum AppAction: Equatable {
@@ -88,6 +89,36 @@ extension AppEnvironment {
 }
 #endif
 
+// This will update the favorite label in product rows
+let updateProductRowAfterDetailLoadedReducer = Reducer<NewAppState, NewAppAction, AppEnvironment> { state, action, _  in
+    switch action {
+    case let .productDetail(.detailLoaded(product)):
+        if let index = state.productList.rows.firstIndex(where: { $0.id == product.id }) {
+            state.productList.rows.remove(at: index)
+            state.productList.rows.insert(.init(product: product), at: index)
+        }
+        
+        return .none
+        
+    default:
+        return .none
+    }
+}
+
+let newAppReducer: Reducer<NewAppState, NewAppAction, AppEnvironment> = Reducer.combine(
+    productListReducer.pullback(
+        state: \NewAppState.productList,
+        action: /NewAppAction.productList,
+        environment: { $0 }
+    ),
+    productDetailReducer.pullback(
+        state: \NewAppState.productDetail,
+        action: /NewAppAction.productDetail,
+        environment: { $0 }
+    ),
+    updateProductRowAfterDetailLoadedReducer
+)
+
 let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
     switch action {
     case .loadProductList:
@@ -125,7 +156,7 @@ let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, e
         
     case let .productLoaded(product):
         let detail = ProductDetailDisplayInfo(product: product)
-        state.productDetail = ProductDetailState(detail: detail)
+        state.productDetail = ProductDetailState(productId: product.id, detail: detail)
         if let index = state.productList.rows.firstIndex(where: { $0.id == product.id }) {
             state.productList.rows.remove(at: index)
             state.productList.rows.insert(.init(product: product), at: index)
