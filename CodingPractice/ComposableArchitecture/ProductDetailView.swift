@@ -46,21 +46,21 @@ private func sendDetailLoadedActionIfNeeded(_ product: Product?) -> Effect<Produ
 }
 
 struct ProductDetailView: View {
-    let store: Store<AppState, AppAction>
+    let store: Store<ProductDetailState, ProductDetailAction>
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
             NavigationView {
                 VStack {
-                    Text(viewStore.state.productDetail?.detail?.description ?? "Product Description")
+                    Text(viewStore.state.detail?.description ?? "Product Description")
                         .font(.title2)
                     Spacer()
                     Button(
                         action: {
-                            viewStore.send(.toggleProductIsFavorite(viewStore.state.productDetail!.detail!.id))
+                            viewStore.send(.toggleProductIsFavorite(viewStore.state.productId))
                         },
                         label: {
-                            if viewStore.state.productDetail?.detail?.isFavorited == true {
+                            if viewStore.state.detail?.isFavorited == true {
                                 Text("Unfavorite")
                                     .foregroundColor(.gray)
                             } else {
@@ -73,7 +73,10 @@ struct ProductDetailView: View {
                 }
                 
             }
-            .navigationTitle(viewStore.state.productDetail?.detail?.title ?? "Product Name")
+            .navigationTitle(viewStore.state.detail?.title ?? "Product Name")
+            .onAppear {
+                viewStore.send(.loadDetail(viewStore.state.productId))
+            }
         }
     }
 }
@@ -81,10 +84,8 @@ struct ProductDetailView: View {
 struct ProductDetailView_Previews: PreviewProvider {
     static var previews: some View {
         ProductDetailView(store: .init(
-            initialState: .init(
-                productList: .init()
-            ),
-            reducer: appReducer,
+            initialState: .init(productId: ""),
+            reducer: productDetailReducer,
             environment: .preview
         ))
     }

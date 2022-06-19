@@ -14,10 +14,8 @@ final class Router {
         let rootViewController: UIViewController
         if (ProcessInfo.processInfo.environment["enable_swift_ui"] != nil) {
             let productListView = ProductListView(store: .init(
-                initialState: .init(
-                    productList: .init()
-                ),
-                reducer: appReducer,
+                initialState: .init(),
+                reducer: productListReducer,
                 environment: .live
             ))
             rootViewController = UIHostingController(rootView: productListView)
