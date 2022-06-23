@@ -68,10 +68,10 @@ extension PersistenceEnvironment {
 final class ComposableArchitectureTests: XCTestCase {
     private let scheduler = DispatchQueue.test
     
-    func testFetchProductSuccess() {
+    func testLoadListSuccess() {
         let store = TestStore(
             initialState: .init(),
-            reducer: appReducer,
+            reducer: productListReducer,
             environment: .init(
                 webService: .success,
                 mainQueue: scheduler.eraseToAnyScheduler(),
@@ -79,77 +79,124 @@ final class ComposableArchitectureTests: XCTestCase {
             )
         )
         
-        store.send(.fetchProducts)
+        store.send(.loadList)
         scheduler.advance()
         
-        store.receive(.productsResponse(.success(fakeProducts))) {
-            $0.productRows = fakeProducts.map(ProductRowDisplayInfo.init(product:))
+        store.receive(.listLoaded(.success(fakeProducts))) {
+            $0.rows = fakeProducts.map(ProductRowDisplayInfo.init(product:))
         }
     }
     
-    func testFetchProductFailure() {
+    func testLoadListFailure() {
         let store = TestStore(
             initialState: .init(),
-            reducer: appReducer,
+            reducer: productListReducer,
             environment: .init(
                 webService: .failure,
                 mainQueue: scheduler.eraseToAnyScheduler(),
-                persistence: .unimplemented
+                persistence: .success
             )
         )
         
-        store.send(.fetchProducts)
+        store.send(.loadList)
         scheduler.advance()
         
-        let appError = AppError(webServiceError: webServiceError)
-        store.receive(.productsResponse(.failure(appError))) {
-            $0.productRows = []
-            $0.errorMessage = appError.description
+        store.receive(.listLoaded(.failure(.init(webServiceError: webServiceError)))) {
+            $0.errorMessage = webServiceError.description
         }
     }
     
-    func testTapProductRowAndThenLeave() {
+    func testSetNavigationSelection() {
         let store = TestStore(
-            initialState: .init(),
-            reducer: appReducer,
+            initialState: .init(
+                rows: fakeProducts.map(ProductRowDisplayInfo.init(product:))
+            ),
+            reducer: productListReducer,
             environment: .init(
-                webService: .unimplemented,
+                webService: .success,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
         )
         
-        store.send(.tapProductRow("deedbeef-deed-beaf-deedbeefdeed"))
-        scheduler.advance()
-        
-        store.receive(.presentProduct(fakeProduct)) {
-            $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct)
-        }
-        
-        store.send(.leaveProductDetail) {
-            $0.productDetail = nil
+        store.send(.setNavigation(fakeProduct.id)) {
+            $0.selection = .init(.init(productId: fakeProduct.id), id: fakeProduct.id)
         }
     }
     
-    func testTapProductIsFavorite() {
+    func testLoadDetail() {
         let store = TestStore(
-            initialState: .init(productRows: fakeProducts.map(ProductRowDisplayInfo.init(product:))),
-            reducer: appReducer,
+            initialState: .init(
+                rows: fakeProducts.map(ProductRowDisplayInfo.init(product:))
+            ),
+            reducer: productListReducer,
             environment: .init(
-                webService: .unimplemented,
+                webService: .success,
                 mainQueue: scheduler.eraseToAnyScheduler(),
                 persistence: .success
             )
         )
         
-        store.send(.tapProductIsFavorite("deedbeef-deed-beaf-deedbeefdeed"))
+        store.send(.setNavigation(fakeProduct.id)) {
+            $0.selection = .init(.init(productId: fakeProduct.id), id: fakeProduct.id)
+        }
+        
+        store.send(.detail(.loadDetail(fakeProduct.id)))
         scheduler.advance()
         
-        store.receive(.presentProduct(fakeProduct.toggleIsFavorite())) {
-            $0.productDetail = ProductDetailDisplayInfo(product: fakeProduct.toggleIsFavorite())
-            $0.productRows = [
-                ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())
-            ]
+        store.receive(.detail(.detailLoaded(fakeProduct))) {
+            $0.selection = .init(
+                .init(
+                    productId: fakeProduct.id,
+                    detail: .init(product: fakeProduct)
+                ),
+                id: fakeProduct.id
+            )
+        }
+    }
+    
+    func testToggleIsProductFavorited() {
+        let store = TestStore(
+            initialState: .init(
+                rows: fakeProducts.map(ProductRowDisplayInfo.init(product:))
+            ),
+            reducer: productListReducer,
+            environment: .init(
+                webService: .success,
+                mainQueue: scheduler.eraseToAnyScheduler(),
+                persistence: .success
+            )
+        )
+        
+        store.send(.setNavigation(fakeProduct.id)) {
+            $0.selection = .init(.init(productId: fakeProduct.id), id: fakeProduct.id)
+        }
+        
+        store.send(.detail(.loadDetail(fakeProduct.id)))
+        scheduler.advance()
+        
+        store.receive(.detail(.detailLoaded(fakeProduct))) {
+            $0.selection = .init(
+                .init(
+                    productId: fakeProduct.id,
+                    detail: .init(product: fakeProduct)
+                ),
+                id: fakeProduct.id
+            )
+        }
+        
+        store.send(.detail(.toggleProductIsFavorite(fakeProduct.id)))
+        scheduler.advance()
+        
+        store.receive(.detail(.detailLoaded(fakeProduct.toggleIsFavorite()))) {
+            $0.rows = [ProductRowDisplayInfo(product: fakeProduct.toggleIsFavorite())]
+            $0.selection = .init(
+                .init(
+                    productId: fakeProduct.id,
+                    detail: .init(product: fakeProduct.toggleIsFavorite())
+                ),
+                id: fakeProduct.id
+            )
         }
     }
 }
