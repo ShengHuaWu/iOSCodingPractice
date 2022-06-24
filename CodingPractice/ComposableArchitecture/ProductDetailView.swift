@@ -50,28 +50,25 @@ struct ProductDetailView: View {
     
     var body: some View {
         WithViewStore(self.store) { viewStore in
-            NavigationView {
-                VStack {
-                    Text(viewStore.state.detail?.description ?? "Product Description")
-                        .font(.title2)
-                    Spacer()
-                    Button(
-                        action: {
-                            viewStore.send(.toggleProductIsFavorite(viewStore.state.productId))
-                        },
-                        label: {
-                            if viewStore.state.detail?.isFavorited == true {
-                                Text("Unfavorite")
-                                    .foregroundColor(.gray)
-                            } else {
-                                Text("Favorite")
-                                    .foregroundColor(.red)
-                            }
+            VStack {
+                Text(viewStore.state.detail?.description ?? "Product Description")
+                    .font(.title2)
+                Spacer()
+                Button(
+                    action: {
+                        viewStore.send(.toggleProductIsFavorite(viewStore.state.productId))
+                    },
+                    label: {
+                        if viewStore.state.detail?.isFavorited == true {
+                            Text("Unfavorite")
+                                .foregroundColor(.gray)
+                        } else {
+                            Text("Favorite")
+                                .foregroundColor(.red)
                         }
-                    ).font(.title3)
-                    Spacer()
-                }
-                
+                    }
+                ).font(.title3)
+                Spacer()
             }
             .navigationTitle(viewStore.state.detail?.title ?? "Product Name")
             .onAppear {

@@ -115,9 +115,10 @@ struct ProductListView: View {
                     }
                 }
                 .navigationTitle("Product List")
-                .onAppear {
-                    viewStore.send(.loadList)
-                }
+            }
+            .navigationViewStyle(.stack)
+            .onAppear {
+                viewStore.send(.loadList)
             }
         }
     }
