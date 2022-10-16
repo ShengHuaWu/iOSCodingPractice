@@ -1,10 +1,13 @@
 import Foundation
 
 final class WebServiceClientV2 {
-    private let urlSession: URLSession
-    private let dataProcessor: DataProcessor
+    private let urlSession: URLSessionService
+    private let dataProcessor: DataProcessorService
     
-    init(urlSession: URLSession, dataProcessor: DataProcessor) {
+    init(
+        urlSession: URLSessionService,
+        dataProcessor: DataProcessorService
+    ) {
         self.urlSession = urlSession
         self.dataProcessor = dataProcessor
     }

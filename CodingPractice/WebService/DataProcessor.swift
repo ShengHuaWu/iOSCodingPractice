@@ -1,6 +1,15 @@
 import Foundation
 
-final class DataProcessor {
+protocol DataProcessorService: AnyObject {
+    func process<T>(
+        data: Data?,
+        response: URLResponse?,
+        error: Error?,
+        errorContext: String
+    ) throws -> T where T: Decodable
+}
+
+final class DataProcessor: DataProcessorService {
     private let jsonDecoder: JSONDecoder
     
     init(jsonDecoder: JSONDecoder) {

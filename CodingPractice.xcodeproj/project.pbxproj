@@ -17,6 +17,10 @@
 		9B13896227B5AA7B0070F53F /* DataProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B13896127B5AA7B0070F53F /* DataProcessor.swift */; };
 		9B26FEF528428B060069291A /* ComposableArchitectureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */; };
 		9B5E276A28572F5700BA57E9 /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5E276928572F5700BA57E9 /* ProductDetailView.swift */; };
+		9B70925128FC3CD90055217C /* URLSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B70925028FC3CD90055217C /* URLSessionService.swift */; };
+		9B70925328FC3DD40055217C /* WebServiceV2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B70925228FC3DD40055217C /* WebServiceV2Tests.swift */; };
+		9B70925628FC3E550055217C /* MockURLSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B70925528FC3E550055217C /* MockURLSessionService.swift */; };
+		9B70925828FC3F020055217C /* MockDataProcessorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B70925728FC3F020055217C /* MockDataProcessorService.swift */; };
 		9B726E1D27C1090200A5EB80 /* ProductRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B726E1C27C1090200A5EB80 /* ProductRowCell.swift */; };
 		9B9869E12855F19100129A78 /* WebServiceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9869E02855F19100129A78 /* WebServiceEnvironment.swift */; };
 		9B9869E32855F1D200129A78 /* PersistenceEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9869E22855F1D200129A78 /* PersistenceEnvironment.swift */; };
@@ -73,6 +77,10 @@
 		9B13896127B5AA7B0070F53F /* DataProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProcessor.swift; sourceTree = "<group>"; };
 		9B26FEF428428B060069291A /* ComposableArchitectureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposableArchitectureTests.swift; sourceTree = "<group>"; };
 		9B5E276928572F5700BA57E9 /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
+		9B70925028FC3CD90055217C /* URLSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionService.swift; sourceTree = "<group>"; };
+		9B70925228FC3DD40055217C /* WebServiceV2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceV2Tests.swift; sourceTree = "<group>"; };
+		9B70925528FC3E550055217C /* MockURLSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLSessionService.swift; sourceTree = "<group>"; };
+		9B70925728FC3F020055217C /* MockDataProcessorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataProcessorService.swift; sourceTree = "<group>"; };
 		9B726E1C27C1090200A5EB80 /* ProductRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRowCell.swift; sourceTree = "<group>"; };
 		9B9869E02855F19100129A78 /* WebServiceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceEnvironment.swift; sourceTree = "<group>"; };
 		9B9869E22855F1D200129A78 /* PersistenceEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceEnvironment.swift; sourceTree = "<group>"; };
@@ -199,6 +207,14 @@
 			path = ComposableArchitecture;
 			sourceTree = "<group>";
 		};
+		9B70925428FC3DDC0055217C /* WebService */ = {
+			isa = PBXGroup;
+			children = (
+				9B70925228FC3DD40055217C /* WebServiceV2Tests.swift */,
+			);
+			path = WebService;
+			sourceTree = "<group>";
+		};
 		9BABAA9228411F9800AECB8D /* ComposableArchitecture */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +247,8 @@
 				D810F93227BD249400F8DD78 /* MockProductsRepository.swift */,
 				9BFDB35327BEE25C006327C3 /* MockProductDetailRepository.swift */,
 				9BD4A80D27C25F1300349D41 /* MockPersistence.swift */,
+				9B70925528FC3E550055217C /* MockURLSessionService.swift */,
+				9B70925728FC3F020055217C /* MockDataProcessorService.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -260,6 +278,7 @@
 			children = (
 				9BD8498528F8A8E3007163A9 /* WebServiceV2.swift */,
 				9BD8498828F8A959007163A9 /* WebServiceClientV2.swift */,
+				9B70925028FC3CD90055217C /* URLSessionService.swift */,
 			);
 			path = WebServiceV2;
 			sourceTree = "<group>";
@@ -282,6 +301,7 @@
 			children = (
 				9BB6060A27BAF3AA00D8E5D1 /* Mocks */,
 				9BD4A80C27C25F0700349D41 /* Features */,
+				9B70925428FC3DDC0055217C /* WebService */,
 			);
 			path = CodingPracticeTests;
 			sourceTree = "<group>";
@@ -395,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B70925128FC3CD90055217C /* URLSessionService.swift in Sources */,
 				9BF7398128535EA800669DEE /* ProductListView.swift in Sources */,
 				9BB6060427BAF02400D8E5D1 /* Router.swift in Sources */,
 				9BF85ECB27B9303100E78364 /* WebService.swift in Sources */,
@@ -435,10 +456,13 @@
 				9BFDB35427BEE25C006327C3 /* MockProductDetailRepository.swift in Sources */,
 				D810F93327BD249400F8DD78 /* MockProductsRepository.swift in Sources */,
 				9BF85EC727B92F5800E78364 /* ProductsViewModelTests.swift in Sources */,
+				9B70925628FC3E550055217C /* MockURLSessionService.swift in Sources */,
+				9B70925328FC3DD40055217C /* WebServiceV2Tests.swift in Sources */,
 				9BF85EC927B92F7E00E78364 /* MockWebService.swift in Sources */,
 				D810F8FD27BD1FB900F8DD78 /* ProductFeatureRepositoryTests.swift in Sources */,
 				9BFDB35227BEE223006327C3 /* ProductDetailViewModelTests.swift in Sources */,
 				9BD4A80E27C25F1300349D41 /* MockPersistence.swift in Sources */,
+				9B70925828FC3F020055217C /* MockDataProcessorService.swift in Sources */,
 				9B26FEF528428B060069291A /* ComposableArchitectureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
